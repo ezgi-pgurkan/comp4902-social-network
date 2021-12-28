@@ -28,12 +28,18 @@ DEBUG = config('DEBUG', cast=bool, default=True)
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = "account.Account"
+AUTHENTICATION_BACKENDS = ( 
+    'django.contrib.auth.backends.AllowAllUsersModelBackend', 
+    'account.backends.CaseInsensitiveModelBackend',
+    )
 
 # Application definition
-
 INSTALLED_APPS = [
     # My apps
+    'account',
     'personal',
+
 
     # Third party apps
     'django.contrib.admin',
@@ -138,7 +144,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'media'),
+]
+
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_cdn')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media_cdn')
+# cdn = content delivery network
+
+TEMP = os.path.join(BASE_DIR, 'media_cdn/temp')
+
+# change with domain name in production
+BASE_DIR = "http://127.0.0.1:8000"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

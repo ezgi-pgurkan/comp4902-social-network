@@ -1,8 +1,37 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
-<div>
-	HOME
-</div>
+<style type="text/css">
+.my-grid {
+    border: 1px solid red;
+}
 
+.my-grid-item {
+    border: 1px solid black;
+}
+</style>
+<div class="container">
+    <div class="my-grid d-flex flex-row justify-content-between">
+        <p class="my-grid-item m-auto">Item</p>
+        <p class="my-grid-item m-auto">Item</p>
+        <p class="my-grid-item m-auto">Item</p>
+        <p class="my-grid-item m-auto">Item</p>
+        <p class="my-grid-item m-auto">Item</p>
+        <p class="my-grid-item m-auto">Item</p>
+        
+        <!--
+        <p class="my-grid-item m-auto">Item <span class="material-icons">account_circle</span></p>
+
+        <p class="my-grid-item m-auto">Item <img src="{% static 'images/default_pfp.png' %}"></p> -->
+
+    </div>
+    <div class="my-grid d-flex flex-column mt-4">
+        <p class="my-grid-item m-auto">Item</p>
+        <p class="my-grid-item m-auto">Item</p>
+        <p class="my-grid-item m-auto">Item</p>
+        <p class="my-grid-item m-auto">Item</p>
+        <p class="my-grid-item m-auto">Item</p>
+        <p class="my-grid-item m-auto">Item</p>
+    </div>
+</div>
 {% endblock content %}
