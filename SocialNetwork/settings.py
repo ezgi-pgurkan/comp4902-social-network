@@ -37,9 +37,10 @@ AUTHENTICATION_BACKENDS = (
 # Application definition
 INSTALLED_APPS = [
     # My apps
-    'account',
     'personal',
-
+    'account',
+    'directmessage',
+   
 
     # Third party apps
     'django.contrib.admin',
