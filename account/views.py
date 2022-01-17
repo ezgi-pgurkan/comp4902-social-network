@@ -33,7 +33,7 @@ def register(request, *args, **kwargs):
 
 def logout_view(request):
 	logout(request)
-	return redirect("home")
+	return redirect("login")
 
 def login_view(request, *args, **kwargs):
 	context = {}
