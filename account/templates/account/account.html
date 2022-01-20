@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style type="text/css">
+.image-container {
+    max-width: 250px;
+    height: auto;
+}
+
+.field-heading {
+    color: var(--secondary-text-color);
+}
+
+.icon-container:hover {
+    opacity: 0.3;
+    cursor: pointer;
+}
+
+.friends-icon {
+    color: #4287f5;
+    font-size: 40px;
+}
+
+.person-add-icon {
+    color: #4287f5;
+    font-size: 40px;
+}
+
+.friend-text {
+    font-weight: 500;
+    color: black;
+}
+
+.friends-btn {
+    background-color: #cccccc;
+    border-color: #cccccc;
+    color: #000;
+    font-weight: 500;
+}
+
+.friends-btn:hover {
+    background-color: #bfbfbf;
+    border-color: #bfbfbf;
+}
+
+.dropdown-toggle::after {
+    content: none;
+}
+
+.card {
+    border-radius: 12px;
+}
+
+.material-icons {
+    font-size: 30px;
+}
+
+.material-icons:hover {
+    cursor: pointer;
+}
+
+.confirm-friend-request {
+    color: green;
+}
+
+.confirm-friend-request:hover {
+    opacity: 0.3;
+}
+
+.decline-friend-request:hover {
+    opacity: 0.3;
+}
+
+.decline-friend-request {
+    color: red;
+}
+
+.message-btn-text {
+    font-weight: 500;
+}
+</style>
+<div class="container-fluid">
+    <div class="d-flex flex-row justify-content-center flex-wrap align-items-start">
+        <div class="card profile-card m-2">
+            <div class="card-body">
+                <div class="d-flex flex-column justify-content-center p-4">
+                    <div class="image-container mx-auto mb-4">
+                        <img class="d-block border border-dark rounded-circle img-fluid mx-auto profile-image" alt="codingwithmitch logo" id="id_profile_image" src="{{profile_image}}">
+                    </div>
+                    <p class="mt-4 mb-1 field-heading">Email</p>
+                    {% if is_self %}
+                    <h5>{{email}}</h5>
+                    {% else %}
+                    {% if hide_email %}
+                    <h5>**********</h5>
+                    {% else %}
+                    <h5>{{email}}</h5>
+                    {% endif %}
+                    {% endif %}
+                    <p class="mt-4 mb-1 field-heading">Username</p>
+                    <h5>{{username}}</h5>
+                    <!-- If Auth user is viewing their own profile -->
+                    {% if is_self %}
+                    <a class="mt-4 btn btn-primary" href="#">Update</a>
+                    <div class="d-flex flex-column mt-4">
+                        <a class="m-auto" href="#">Change password</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% if request.user.is_authenticated %}
+        <div class="d-flex flex-column mb-4">
+            <!-- <div class="card m-2 px-4 pb-4">      
+            </div> -->
+            {% if not is_self %}
+            <div class="d-flex flex-row align-items-center btn btn-primary m-2 px-4" onclick="createOrReturnPrivateChat('{{id}}')">
+                <span class="material-icons-outlined m-auto">
+                    mail
+                </span>
+                <span class="message-btn-text m-auto pl-2">&nbspMessage</span>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+<script type="text/javascript">
+// called from base_js.html
+//preloadImage("{{profile_image|safe}}", 'id_profile_image')
+</script>
+{#% include 'chat/create_or_return_private_chat.html' %#}
+{% endblock content %}

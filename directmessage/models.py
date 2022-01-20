@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 
-class PrivateChatRoom(models.Model):
+class DirectMessageRoom(models.Model):
 
 	#A private communication channel between two users.
 
@@ -14,7 +14,7 @@ class PrivateChatRoom(models.Model):
 
 	@property
 	def group_name(self):
-		return f"PrivateChatRoom-{self.id}"
+		return f"DirectMessageRoom-{self.id}"
 
 
 class MessageManager(models.Manager):
@@ -28,7 +28,7 @@ class Message(models.Model):
 	# A chat message created by a user inside a room.
 
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-	room = models.ForeignKey(PrivateChatRoom, on_delete=models.CASCADE)
+	room = models.ForeignKey(DirectMessageRoom, on_delete=models.CASCADE)
 	timestamp = models.DateTimeField(auto_now_add=True)
 	content = models.TextField(unique=False, blank=False)
 
