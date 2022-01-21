@@ -9,9 +9,6 @@ class DirectMessageRoom(models.Model):
 	user2 =	models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user2")
 	is_active = models.BooleanField(default=True)
 
-	def __str__(self):
-		return f"A chat between {user1} and {user2}."
-
 	@property
 	def group_name(self):
 		return f"DirectMessageRoom-{self.id}"

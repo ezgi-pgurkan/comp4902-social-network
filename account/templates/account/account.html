@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<script src="{% static 'bootstrap/js/jquery.min.js '%}"></script>
 <style type="text/css">
+span#mySpan {
+    display: inline;
+}
+
 .image-container {
     max-width: 250px;
     height: auto;
@@ -78,6 +83,10 @@
 .message-btn-text {
     font-weight: 500;
 }
+
+.p-container {
+    max-height: 500px;
+}
 </style>
 <div class="container-fluid">
     <div class="d-flex flex-row justify-content-center flex-wrap align-items-start">
@@ -85,7 +94,7 @@
             <div class="card-body">
                 <div class="d-flex flex-column justify-content-center p-4">
                     <div class="image-container mx-auto mb-4">
-                        <img class="d-block border border-dark rounded-circle img-fluid mx-auto profile-image" alt="codingwithmitch logo" id="id_profile_image" src="{{profile_image}}">
+                        <img class="d-block border border-dark rounded-circle img-fluid mx-auto profile-image p-container" alt="default_pfp1" id="id_profile_image" src="{{profile_image}}">
                     </div>
                     <p class="mt-4 mb-1 field-heading">Email</p>
                     {% if is_self %}
@@ -115,11 +124,21 @@
             </div> -->
             {% if not is_self %}
             <div class="d-flex flex-row align-items-center btn btn-primary m-2 px-4" onclick="createOrReturnPrivateChat('{{id}}')">
-                <span class="material-icons-outlined m-auto">
-                    mail
-                </span>
-                <span class="message-btn-text m-auto pl-2">&nbspMessage</span>
+                <a style=" text-decoration:none; color:white " href="{% url 'directmessage:direct-message-room' %}">
+                    <div style="text-align:right;">
+                        <span style="float:left" class="material-icons-outlined m-auto">
+                            mail
+                        </span>
+                        <span class="message-btn-text m-auto pl-2 "> &nbsp Message</span>
+                    </div>
+                </a>
             </div>
+            <!-- <div class="d-flex flex-row align-items-center btn btn-primary m-2 px-4">
+            <a href="{% url 'directmessage:create-or-return-private-chat' %}">
+        <span class="material-icons-outlined m-auto">
+            mail
+        </span>
+        <span class="message-btn-text m-auto pl-2">&nbspMessage</span> </a> -->
             {% endif %}
         </div>
         {% endif %}
@@ -128,6 +147,128 @@
 <script type="text/javascript">
 // called from base_js.html
 //preloadImage("{{profile_image|safe}}", 'id_profile_image')
+var chatSocket = null;
+var roomId = null;
+
+/*onStart()
+
+function onStart(){
+    {% for x in m_and_f %}
+        preloadImage("{{x.friend.profile_image.url|safe}}", "id_friend_img_{{x.friend.id}}")
+    {% endfor %}
+}*/
+
+function closeWebSocket() {
+    if (chatSocket != null) {
+        chatSocket.close()
+        chatSocket = null
+    }
+}
+
+function setupWebSocket(room_id) {
+
+    console.log("setupWebSocket: " + room_id)
+
+    roomId = room_id
+
+    // close previous socket if one is open
+    closeWebSocket()
+
+    // Correctly decide between ws:// and wss://
+    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws"; { % if debug_mode % }
+    var ws_path = ws_scheme + '://' + window.location.host + "/account/" + roomId + "/"; // development
+    { %
+        else %
+    }
+    var ws_path = ws_scheme + '://' + window.location.host + ":8001/account/" + roomId + "/"; // production
+    { % endif % }
+
+
+    // console.log("Connecting to " + ws_path);
+    chatSocket = new WebSocket(ws_path);
+
+    // Handle incoming messages
+    chatSocket.onmessage = function(message) {
+        // Decode the JSON
+        // console.log("Got chat websocket message " + message.data);
+        console.log("Got websocket message.");
+        var data = JSON.parse(message.data);
+
+        // display the progress bar?
+        displayChatroomLoadingSpinner(data.display_progress_bar)
+
+        // Handle errors (ClientError)
+        if (data.error) {
+            console.error(data.error + ": " + data.message)
+            return;
+        }
+        // Handle joining (Client perspective)
+        if (data.join) {
+            console.log("Joining room " + data.join);
+        }
+        // Handle leaving (client perspective)
+        if (data.leave) {
+            // do nothing
+            console.log("Leaving room " + data.leave);
+        }
+    };
+
+    chatSocket.addEventListener("open", function(e) {
+        console.log("ChatSocket OPEN")
+        // join chat room
+        if ("{{request.user.is_authenticated}}") {
+            chatSocket.send(JSON.stringify({
+                "command": "join",
+                "room": roomId
+            }));
+        }
+    })
+
+    chatSocket.onclose = function(e) {
+        console.log('Chat socket closed.');
+    };
+
+    chatSocket.onOpen = function(e) {
+        console.log("ChatSocket onOpen", e)
+    }
+
+    chatSocket.onerror = function(e) {
+        console.log('ChatSocket error', e)
+    }
+
+    if (chatSocket.readyState == WebSocket.OPEN) {
+        console.log("ChatSocket OPEN")
+    } else if (chatSocket.readyState == WebSocket.CONNECTING) {
+        console.log("ChatSocket connecting..")
+    }
+}
+
+
+function createOrReturnPrivateChat(id) {
+    payload = {
+        "csrfmiddlewaretoken": "{{ csrf_token }}",
+        "user2_id": id,
+    }
+    $.ajax({
+        type: 'POST',
+        dataType: "json",
+        url: "{% url 'directmessage:create-or-return-private-chat' %}", // production
+        data: payload,
+        timeout: 5000,
+        success: function(data) {
+            console.log("SUCCESS", data)
+            if (data['response'] == "Successfully got the chat.") {
+                setupWebSocket(data['chatroom_id'])
+            } else if (data['response'] != null) {
+                alert(data['response'])
+            }
+        },
+        error: function(data) {
+            console.error("ERROR...", data)
+            alert("Something went wrong.")
+        },
+    });
+}
 </script>
-{#% include 'chat/create_or_return_private_chat.html' %#}
+{#% include 'directmessage/create_or_return_private_chat.html' %#}
 {% endblock content %}
