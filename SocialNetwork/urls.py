@@ -34,6 +34,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),    
     path('account/', include('account.urls', namespace='account')),
     path('directmessage/', include('directmessage.urls', namespace='directmessage')),
+    path('personal/', include('personal.urls', namespace='personal')),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
     path('register/', register, name='register'),
