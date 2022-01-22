@@ -12,12 +12,19 @@ DEBUG = False
 
 def direct_message_room_view(request, *args, **kwargs):
 	user = request.user
+	room_id=request.GET.get("room_id")
 
 	# Redirect if not authenticated
 	if not user.is_authenticated:
 		return redirect("login")
 
 	context = {}
+	if room_id:
+		try:
+			room = DirectMessageRoom.objects.get(pk=room_id)
+			context['room'] = room
+		except DirectMessageRoom.DoesNotExist:
+			pass
 
 	# Finds all the rooms the user is a part of
 	rooms1=DirectMessageRoom.objects.filter(user1=user, is_active=True)
