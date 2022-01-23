@@ -67,40 +67,45 @@ p.c {
                             </a>
                         </div>
                     </div>
+                    {% if post.post_image %}
                     <hr style="height:1px;border-width:0;background-color:gray; margin:2px;">
                     <div class="my-grid d-flex flex-row justify-content-between">
                         <!-- post picture -->
                         <div class="my-grid-item m-auto">
-                            <img class="img-fluid mx-auto d-block" src="{{post.post_image.url}}" alt="" width="702">
+                            <img class="img-fluid mx-auto d-block" src="{{post.post_image.url}}" alt="" width="600">
                         </div>
                     </div>
                     <hr style="height:1px;border-width:0;background-color:gray; margin: 2px; ">
+                    {% endif %}
+                    <!-- post text -->
                     <div class="my-grid d-flex flex-row justify-content-start">
-                        <!-- like & comment icons -->
-                        <p class="my-grid-item center"><span class="material-icons-outlined">
-                                favorite_border
-                            </span>
-                            <p class="my-grid-item center"><span class="material-icons-outlined">
-                                    mode_comment
-                                </span> </p>
-                    </div>
-                    <div class="my-grid d-flex flex-row justify-content-start">
-                        <!-- post text -->
                         <p class="my-grid-item"><b>{{post.author.username}}&nbsp</b></p>
                         <p class="c">{{post.text}}</p>
                     </div>
+                    <!-- like & comment icons -->
+                    <div class="my-grid d-flex flex-row justify-content-start">
+                        <p class="my-grid-item center">
+                            <span class="material-icons-outlined">
+                                favorite_border
+                            </span></p>
+                        <p class="my-grid-item center">
+                            <span class="material-icons-outlined">
+                                mode_comment
+                            </span>
+                        </p>
+                    </div>
+                    <!-- post comments -->
                     <div class="my-grid d-flex flex-row justify-content-between">
-                        <!-- post comments -->
                         <p class="my-grid-item ">post comments</p>
                     </div>
+                    <!-- post time -->
                     <div class="my-grid d-flex flex-row justify-content-between">
-                        <!-- post time -->
                         <p class="my-grid-item ">post time</p>
                     </div>
                 </div>
             </p>
         </div>
-         <div class="my-grid d-flex flex-column col-3">
+        <div class="my-grid d-flex flex-column col-3">
         </div>
     </div>
 </div>

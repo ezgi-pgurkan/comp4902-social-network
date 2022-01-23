@@ -52,21 +52,34 @@ p.c {
 </style>
 <div class="container">
     <div class="my-grid d-flex flex-row justify-content-between">
-        <div class="my-grid d-flex flex-column col-3">
-            <div class="my-grid d-flex flex-row justify-content-center">
+        <!-- profile info -->
+        <div class="my-grid d-flex flex-column col-4">
+            <div class="my-grid d-flex flex-row justify-content-start">
                 <div class="sidebar">
-                    <!-- profile info -->
-                    <p class="my-grid-item align-items-center m-auto">
-                        <a style=" text-decoration:none; color:black;" class="d-flex flex-row" href="{% url 'account:view' user_id=request.user.id %}">
-                            <div class="my-grid-item m-auto">
-                                <img class="img-fluid mx-auto d-block" src="{{user.profile_image.url}}" alt="" width="75">
-                            </div>
-                            <p class="my-grid-item d-flex align-items-center center2"><b>&nbsp{{user.username}}</b></p>
-                        </a>
-                    </p>
+                    <div class="d-flex flex-column">
+                        <div class="d-flex flex-row">
+                            <p class="my-grid-item align-items-center m-auto">
+                                <a style=" text-decoration:none; color:black;" class="d-flex flex-row" href="{% url 'account:view' user_id=request.user.id %}">
+                                    <div class="my-grid-item m-auto">
+                                        <img class="img-fluid mx-auto d-block" src="{{user.profile_image.url}}" alt="" width="75">
+                                    </div>
+                                    <p class="my-grid-item d-flex align-items-center center2"><b>&nbsp{{user.username}}</b></p>
+                                </a>
+                            </p>
+                        </div>
+                        <br>
+                        <div class="d-flex flex-row">
+                            <p class="my-grid-item align-items-center m-auto ">
+                                <a style="text-decoration:none; color:black" href="{% url 'personal:add-post' %}">
+                                    <button type="button" class="btn btn-dark">Create new post</button>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+     
         <!-- POSTS -->
         <div class="my-grid d-flex flex-column col-6 mt-4">
             {% for post in posts %}
@@ -83,59 +96,60 @@ p.c {
                             </a>
                         </div>
                         <div class="btn-group dropleft">
-                            <a href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a href="#" style=" text-decoration:none; color:black;" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="material-icons-outlined">
                                     more_vert
                                 </span>
                                 <div class="dropdown-menu">
                                     <a style=" text-decoration:none; color:black;" class="dropdown-item" href="{% url 'personal:postdetail' post.pk %}">
-                                        <h5>Go to post</h5>
+                                        Go to post
                                     </a>
                                 </div>
                             </a>
                         </div>
                     </div>
+                    {% if post.post_image %}
                     <hr style="height:1px;border-width:0;background-color:gray; margin:2px;">
                     <div class="my-grid d-flex flex-row justify-content-between">
                         <!-- post picture -->
                         <div class="my-grid-item m-auto">
-                            <img class="img-fluid mx-auto d-block" src="{{post.post_image.url}}" alt="" width="702">
+                            <img class="img-fluid mx-auto d-block" src="{{post.post_image.url}}" alt="" width="600">
                         </div>
                     </div>
                     <hr style="height:1px;border-width:0;background-color:gray; margin: 2px; ">
+                    {% endif %}
+                    <!-- post text -->
                     <div class="my-grid d-flex flex-row justify-content-start">
-                        <!-- like & comment icons -->
-                        <p class="my-grid-item center"><span class="material-icons-outlined">
-                                favorite_border
-                            </span>
-                            <p class="my-grid-item center"><span class="material-icons-outlined">
-                                    mode_comment
-                                </span> </p>
-                    </div>
-                    <div class="my-grid d-flex flex-row justify-content-start">
-                        <!-- post text -->
                         <p class="my-grid-item"><b>{{post.author.username}}&nbsp</b></p>
                         <p class="c">{{post.text}}</p>
                     </div>
+                    <!-- like & comment icons -->
+                    <div class="my-grid d-flex flex-row justify-content-start">
+                        <p class="my-grid-item center">
+                            <span class="material-icons-outlined">
+                                favorite_border
+                            </span></p>
+                        <p class="my-grid-item center">
+                            <span class="material-icons-outlined">
+                                mode_comment
+                            </span>
+                        </p>
+                    </div>
+                    <!-- post comments -->
                     <div class="my-grid d-flex flex-row justify-content-between">
-                        <!-- post comments -->
                         <p class="my-grid-item ">post comments</p>
                     </div>
+                    <!-- post time -->
                     <div class="my-grid d-flex flex-row justify-content-between">
-                        <!-- post time -->
                         <p class="my-grid-item ">post time</p>
                     </div>
                 </div>
             </p>
             {% endfor %}
         </div>
-        <div class="my-grid d-flex flex-column col-3">
+        <div class="my-grid d-flex flex-column col-2">
             <div class="my-grid d-flex flex-row justify-content-center">
-                <div class="sidebar">
-                    <!--  make a new post-->
-                    <p>&nbsp</p>
-                    <p class="my-grid-item align-items-center m-auto ">make a new post</p>
-                </div>
+                <p></p>
             </div>
         </div>
     </div>
@@ -151,7 +165,7 @@ p.c {
         <p class="my-grid-item m-auto">Item <span class="material-icons">account_circle</span></p> 
         <p class="my-grid-item m-auto">Item <img src="{% static 'images/default_pfp.png' %}"></p> 
     </div>-->
-    <div class="my-grid d-flex flex-column mt-4">
+    <div class="my-grid d-flex flex-column mt-3">
         <p class="my-grid-item m-auto">Item</p>
         <p class="my-grid-item m-auto">Item</p>
         <p class="my-grid-item m-auto">Item</p>
