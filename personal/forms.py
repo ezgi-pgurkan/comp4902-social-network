@@ -7,6 +7,8 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ('text', 'post_image', 'author')
         widgets = {
-                    'text': forms.Textarea(attrs={'class': 'form-conrol'}),
-                    'author': forms.TextInput(attrs={'class': 'form-conrol'}),
+                    'text': forms.Textarea(attrs={'class': 'form-conrol', 'placeholder': 'Write a post...'}),
+                    'author': forms.TextInput(attrs={'class': 'form-conrol', 'value':'', 'id': 'elder', 'type':'hidden'}),
                     }
+
+

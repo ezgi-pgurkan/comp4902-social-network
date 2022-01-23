@@ -25,6 +25,22 @@
     column-gap: 3px;
 }
 
+.material-icons-outlined.md-18 {
+    font-size: 18px;
+}
+
+.material-icons-outlined.md-24 {
+    font-size: 24px;
+}
+
+.material-icons-outlined.md-36 {
+    font-size: 36px;
+}
+
+.material-icons.red600 {
+    color: #B80C04;
+}
+
 .center {
     margin: 0px 0px 0px 0px;
     padding: 0px;
@@ -32,6 +48,11 @@
 
 .center2 {
     margin: 10px 0px 10px 0px;
+    padding: 0px;
+}
+
+.center3 {
+    margin: 0px 0px 30px 0px;
     padding: 0px;
 }
 
@@ -53,7 +74,7 @@ p.c {
 <div class="container">
     <div class="my-grid d-flex flex-row justify-content-between">
         <!-- profile info -->
-        <div class="my-grid d-flex flex-column col-4">
+        <div class="my-grid d-flex flex-column col-3">
             <div class="my-grid d-flex flex-row justify-content-start">
                 <div class="sidebar">
                     <div class="d-flex flex-column">
@@ -70,16 +91,13 @@ p.c {
                         <br>
                         <div class="d-flex flex-row">
                             <p class="my-grid-item align-items-center m-auto ">
-                                <a style="text-decoration:none; color:black" href="{% url 'personal:add-post' %}">
-                                    <button type="button" class="btn btn-dark">Create new post</button>
-                                </a>
+                                INFO
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-     
         <!-- POSTS -->
         <div class="my-grid d-flex flex-column col-6 mt-4">
             {% for post in posts %}
@@ -113,43 +131,68 @@ p.c {
                     <div class="my-grid d-flex flex-row justify-content-between">
                         <!-- post picture -->
                         <div class="my-grid-item m-auto">
-                            <img class="img-fluid mx-auto d-block" src="{{post.post_image.url}}" alt="" width="600">
+                            <img class="img-fluid mx-auto d-block" src="{{post.post_image.url}}" alt="" width="700">
                         </div>
                     </div>
                     <hr style="height:1px;border-width:0;background-color:gray; margin: 2px; ">
                     {% endif %}
                     <!-- post text -->
                     <div class="my-grid d-flex flex-row justify-content-start">
-                        <p class="my-grid-item"><b>{{post.author.username}}&nbsp</b></p>
+                        <p class="my-grid-item"><b>&nbsp &nbsp{{post.author.username}}&nbsp</b></p>
                         <p class="c">{{post.text}}</p>
                     </div>
                     <!-- like & comment icons -->
                     <div class="my-grid d-flex flex-row justify-content-start">
-                        <p class="my-grid-item center">
-                            <span class="material-icons-outlined">
-                                favorite_border
-                            </span></p>
-                        <p class="my-grid-item center">
-                            <span class="material-icons-outlined">
+                        <form action="{% url 'personal:like-post-view' %}" method="POST">
+                            {% csrf_token %}
+                            <p class="my-grid-item center">
+                                <button type="submit" name="post_id" value="{{ post.id }}" style=" border-color: transparent;  color: #B80C04; background-color: transparent; border-radius:50%">
+                                    {% if account not in post.liked.all %}
+                                    <span class="material-icons-outlined md-36 red600">
+                                         favorite_border
+                                    </span>
+                                    {% else %}
+                                    <span class=" material-icons-outlined md-36 red600">
+                                       favorite
+                                    </span>
+                                    {% endif %}
+                                </button>
+                            </p>
+                        </form>
+                        <p class="my-grid-item d-flex align-items-center center">
+                            <span class="material-icons-outlined md-36">
                                 mode_comment
                             </span>
                         </p>
                     </div>
+                    <div class="my-grid d-flex flex-row justify-content-between">
+                        <p class="my-grid-item "> <b> &nbsp &nbsp{{post.num_likes}} likes</b></p>
+                    </div>
                     <!-- post comments -->
                     <div class="my-grid d-flex flex-row justify-content-between">
-                        <p class="my-grid-item ">post comments</p>
+                        <p class="my-grid-item ">&nbsp &nbsppost comments</p>
                     </div>
                     <!-- post time -->
                     <div class="my-grid d-flex flex-row justify-content-between">
-                        <p class="my-grid-item ">post time</p>
+                        <p class="my-grid-item" style="color:#6E6A6A  ; font-weight: 100;"><small>&nbsp &nbsp{{post.date_added}}</small></p>
                     </div>
                 </div>
             </p>
             {% endfor %}
         </div>
-        <div class="my-grid d-flex flex-column col-2">
+        <div class="my-grid d-flex flex-column col-3">
             <div class="my-grid d-flex flex-row justify-content-center">
-                <p></p>
+                <div class="sidebar">
+                    <div class="d-flex flex-row">
+                        <p class="my-grid-item align-items-center m-auto ">
+                            <br>
+                            <br>
+                            <a style="text-decoration:none; color:black" href="{% url 'personal:add-post' %}">
+                                <button type="button" class="btn btn-dark">Create new post</button>
+                            </a>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
