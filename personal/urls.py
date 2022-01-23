@@ -1,11 +1,12 @@
-from django.urls import path
-"""
-from personal.views import (
-	#account_view,
-)
-"""
+from django.urls import path, include
+
+from personal import views
+
 app_name = 'personal'
 
 urlpatterns = [
-	#path('<user_id>/', account_view, name="view"),
-]
+    path('post/<int:pk>', views.postDetailView, name='postdetail'),
+
+
+] 
+
