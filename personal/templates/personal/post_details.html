@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block content %}<script src="{% static 'bootstrap/js/jquery-3.6.0.min.js' %}"></script>
+{% block content %}
+<script src="{% static 'bootstrap/js/jquery-3.6.0.min.js' %}"></script>
 <style type="text/css">
 .my-grid {
     border: 1px;
-    /*border-style: solid;
-    border-color: red;*/
-    row-gap: 1px;
-    column-gap: 3px;
+ 
+    grid-row-gap: 0px;
+    row-gap: 0;
+    grid-column-gap: 0px;
 }
 
 .my-gridbc {
@@ -15,14 +16,19 @@
     border-style: solid;
     border-color: #CFC8D1;
     background-color: white;
+    grid-row-gap: 0px;
+    grid-column-gap: 0px;
 }
 
 .my-grid-item {
     border: 1px;
-    /* border-style: solid;
-    border-color: black;*/
+  
     column-gap: 3px;
+    grid-row-gap: 0px;
+    grid-column-gap: 0px;
 }
+
+
 
 .center {
     margin: 0px 0px 0px 0px;
@@ -31,6 +37,11 @@
 
 .center2 {
     margin: 10px 0px 10px 0px;
+    padding: 0px;
+}
+
+.center3 {
+    margin: 0px 0px 30px 0px;
     padding: 0px;
 }
 
@@ -51,62 +62,104 @@ p.c {
 </style>
 <div class="container">
     <div class="my-grid d-flex flex-row justify-content-between">
-        <div class="my-grid d-flex flex-column col-3">
+        <div class="my-grid d-flex  flex-column col-1 mt-4">
         </div>
-        <div class="my-grid d-flex flex-column col-6 mt-4">
-            <p class="my-grid-item m-auto">
-                <div class="my-grid my-gridbc d-flex flex-column">
-                    <!-- post header -->
-                    <div class="my-grid d-flex flex-row justify-content-between align-items-center">
-                        <div class="d-flex justify-content-start">
-                            <a style=" text-decoration:none; color:black;" class="d-flex flex-row" href="{% url 'account:view' user_id=post.author.id %}">
-                                <div class="my-grid-item d-flex align-items-center m-auto">
-                                    <img class="img-fluid mx-auto d-block" src="{{post.author.profile_image.url}}" alt="" width="40">
+        <div class="my-gridbc d-inline-flex flex-row">
+            <p class="my-grid-item">
+                <div class="my-grid d-inline-flex flex-column">
+                    <div class="my-grid d-inline-flex flex-column ">
+                        <p class="my-grid-item m-auto">
+                            {% if post.post_image %}
+                            <div class="my-grid d-flex flex-row justify-content-between">
+                                <!-- post picture -->
+                                <div class="my-grid-item m-auto">
+                                    <img class="img-fluid mx-auto d-block" src="{{post.post_image.url}}" alt="" width="700">
                                 </div>
-                                <p class="my-grid-item d-flex center2"><b>&nbsp{{post.author.username}}</b></p>
-                            </a>
-                        </div>
-                    </div>
-                    {% if post.post_image %}
-                    <hr style="height:1px;border-width:0;background-color:gray; margin:2px;">
-                    <div class="my-grid d-flex flex-row justify-content-between">
-                        <!-- post picture -->
-                        <div class="my-grid-item m-auto">
-                            <img class="img-fluid mx-auto d-block" src="{{post.post_image.url}}" alt="" width="600">
-                        </div>
-                    </div>
-                    <hr style="height:1px;border-width:0;background-color:gray; margin: 2px; ">
-                    {% endif %}
-                    <!-- post text -->
-                    <div class="my-grid d-flex flex-row justify-content-start">
-                        <p class="my-grid-item"><b>{{post.author.username}}&nbsp</b></p>
-                        <p class="c">{{post.text}}</p>
-                    </div>
-                    <!-- like & comment icons -->
-                    <div class="my-grid d-flex flex-row justify-content-start">
-                        <p class="my-grid-item center">
-                            <span class="material-icons-outlined">
-                                favorite_border
-                            </span></p>
-                        <p class="my-grid-item center">
-                            <span class="material-icons-outlined">
-                                mode_comment
-                            </span>
+                            </div>
+                            {% endif %}
+                        </p>
+                        <p class="my-grid-item m-auto">
+                            <!-- post text -->
+                            <div class="my-grid d-flex flex-row justify-content-start">
+                                <p class="my-grid-item" style="margin-left:10px;"><b>{{post.author.username}}&nbsp</b></p>
+                                <p class="c" style="margin-right:10px">{{post.text}}</p>
+                            </div>
                         </p>
                     </div>
-                    <!-- post comments -->
-                    <div class="my-grid d-flex flex-row justify-content-between">
-                        <p class="my-grid-item ">post comments</p>
+                </div>
+            </p>   
+            <div style="border-left:1px solid #CFC8D1;height:100%"></div>
+            <p class="my-grid-item "><p class="my-grid-item">&nbsp</p>
+                <div class="my-grid d-inline-flex flex-column">
+                    <div class="my-grid-item d-inline-flex flex-row justify-content-start ">
+                        <a style=" text-decoration:none; color:black;" class="d-inline-flex flex-row" href="{% url 'account:view' user_id=request.user.id %}">
+                            <img class="img-fluid d-block" src="{{user.profile_image.url}}" alt="" width="75">
+                            <p class="my-grid-item d-flex align-items-center center2"><b>&nbsp{{user.username}}</b></p>
+                        </a>
                     </div>
-                    <!-- post time -->
-                    <div class="my-grid d-flex flex-row justify-content-between">
-                        <p class="my-grid-item ">post time</p>
+
+<hr style="height:1px;border-width:0;background-color:gray; margin:2px;">
+                  
+                    <!-- comments -->
+                    <div class="my-grid d-flex flex-row justify-content-center align-items-center">
+                        <p class="my-grid-item m-auto" style="font-weight:bold;">
+                            Comments
+                        </p>
                     </div>
+                    <p class="my-grid-item d-flex flex-row" style="width:390px;">post comments
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sappost comments Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentpost comments Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentiente ea proident</p>
                 </div>
             </p>
         </div>
-        <div class="my-grid d-flex flex-column col-3">
+        <div class="my-grid d-flex  flex-column col-1 mt-4">
         </div>
     </div>
 </div>
+<script type="text/javascript">
+$(document).ready(function() {
+
+    $('.like-form').submit(function(e) {
+        e.preventDefault()
+
+        const post_id = $(this).attr('id')
+
+        const likeText = $(`.like-btn${post_id}`).text()
+        const trim = $.trim(likeText)
+
+        const url = $(this).attr('action')
+
+        let res;
+        const likes = $(`.like-count${post_id}`).text()
+        const trimCount = parseInt(likes)
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: {
+                'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                'post_id': post_id,
+
+            },
+            success: function(response) {
+                if (trim == 'Unlike') {
+                    $(`.like-btn${post_id}`).text('Like').css({ "font-weight": "bold", "margin-left": "1px" });
+                    res = trimCount - 1
+                } else {
+                    $(`.like-btn${post_id}`).text('Unlike').css({ "font-weight": "bold", "margin-left": "1px" });
+                    res = trimCount + 1
+                }
+
+                $(`.like-count${post_id}`).text(res + " likes").css({ "font-weight": "bold", "margin-left": "10px" });
+            },
+
+            error: function(response) {
+                console.log('error', response)
+            },
+        })
+
+
+
+    })
+});
+</script>
 {% endblock content %}

@@ -5,10 +5,10 @@
 <style type="text/css">
 .my-grid {
     border: 1px;
-    /* border-style: solid;
-    border-color: red;*/
-    row-gap: 1px;
-    column-gap: 7px;
+   /* border-style: solid;
+    border-color: red; */
+    row-gap: 0;
+    column-gap: 10px;
 }
 
 .my-gridbc {
@@ -20,8 +20,8 @@
 
 .my-grid-item {
     border: 1px;
-    /* border-style: solid;
-    border-color: black;*/
+   /* border-style: solid;
+    border-color: black; */
     column-gap: 3px;
 }
 
@@ -75,7 +75,7 @@ p.c {
     <div class="my-grid d-flex flex-row justify-content-between">
         <!-- profile info -->
         <div class="my-grid d-flex flex-column col-3">
-            <div class="my-grid d-flex flex-row justify-content-start">
+            <div class="my-grid d-flex flex-row justify-content-center">
                 <div class="sidebar">
                     <div class="d-flex flex-column">
                         <div class="d-flex flex-row">
@@ -99,7 +99,7 @@ p.c {
             </div>
         </div>
         <!-- POSTS -->
-        <div class="my-grid d-flex flex-column col-6 mt-4">
+        <div class="my-grid d-flex flex-column col-5 mt-4">
             {% for post in posts %}
             <p class="my-grid-item m-auto">
                 <div class="my-grid my-gridbc d-flex flex-column">
@@ -138,43 +138,44 @@ p.c {
                     {% endif %}
                     <!-- post text -->
                     <div class="my-grid d-flex flex-row justify-content-start">
-                        <p class="my-grid-item"><b>&nbsp &nbsp{{post.author.username}}&nbsp</b></p>
-                        <p class="c">{{post.text}}</p>
+                        <p class="my-grid-item" style="margin-left:10px;"><b>{{post.author.username}}&nbsp</b></p>
+                        <p class="c" style="margin-right:10px">{{post.text}}</p>
                     </div>
                     <!-- like & comment icons -->
-                    <div class="my-grid d-flex flex-row justify-content-start">
-                        <form action="{% url 'personal:like-post-view' %}" method="POST">
+                    <div class="my-grid d-flex flex-row justify-content-start align-items-center">
+                        <form action="{% url 'personal:like-post-view' %}" method="POST" class="like-form" id="{{post.id}}">
                             {% csrf_token %}
                             <p class="my-grid-item center">
-                                <button type="submit" name="post_id" value="{{ post.id }}" style=" border-color: transparent;  color: #B80C04; background-color: transparent; border-radius:50%">
+                                <button class="like-btn{{post.id}}" type="submit" name="post_id" value="{{ post.id }}" style=" font-weight:bold; border-color: transparent; margin-left:2px;  color: #B80C04; background-color: transparent; border-radius:50%">
                                     {% if account not in post.liked.all %}
-                                    <span class="material-icons-outlined md-36 red600">
-                                         favorite_border
-                                    </span>
+                                    Like
                                     {% else %}
-                                    <span class=" material-icons-outlined md-36 red600">
-                                       favorite
-                                    </span>
+                                    Unlike
                                     {% endif %}
                                 </button>
                             </p>
                         </form>
-                        <p class="my-grid-item d-flex align-items-center center">
-                            <span class="material-icons-outlined md-36">
-                                mode_comment
-                            </span>
-                        </p>
+                       
+                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" style=" font-weight:bold; border-color: transparent; color: black; background-color: transparent; margin-left:1px;   box-shadow: none; ">
+                               Comments
+                            </button>
+                      
                     </div>
                     <div class="my-grid d-flex flex-row justify-content-between">
-                        <p class="my-grid-item "> <b> &nbsp &nbsp{{post.num_likes}} likes</b></p>
+                        <p class="my-grid-item like-count{{post.id}}" style="margin-left:10px"> <b> {{post.num_likes}} likes</b></p>
                     </div>
                     <!-- post comments -->
-                    <div class="my-grid d-flex flex-row justify-content-between">
-                        <p class="my-grid-item ">&nbsp &nbsppost comments</p>
+                    <div class="collapse" id="collapseExample">
+                        <div class="card card-body">
+                            <div class="my-grid d-flex flex-row justify-content-between">
+                                <p class="my-grid-item" style="margin-left:10px">post comments
+                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.</p>
+                            </div>
+                        </div>
                     </div>
                     <!-- post time -->
                     <div class="my-grid d-flex flex-row justify-content-between">
-                        <p class="my-grid-item" style="color:#6E6A6A  ; font-weight: 100;"><small>&nbsp &nbsp{{post.date_added}}</small></p>
+                        <p class="my-grid-item" style="color:#6E6A6A; margin-left:10px ; font-weight: 100;"><small>{{post.date_added}}</small></p>
                     </div>
                 </div>
             </p>
@@ -196,25 +197,51 @@ p.c {
             </div>
         </div>
     </div>
-    <!-- home style 
+<script type="text/javascript">
+$(document).ready(function() {
 
-    <div class="my-grid d-flex flex-row justify-content-between">
-        <p class="my-grid-item m-auto">Item</p>
-        <p class="my-grid-item m-auto">Item</p>
-        <p class="my-grid-item m-auto">Item</p>
-        <p class="my-grid-item m-auto">Item</p>
-        <p class="my-grid-item m-auto">Item</p>
-        <p class="my-grid-item m-auto">Item</p>
-        <p class="my-grid-item m-auto">Item <span class="material-icons">account_circle</span></p> 
-        <p class="my-grid-item m-auto">Item <img src="{% static 'images/default_pfp.png' %}"></p> 
-    </div>-->
-    <div class="my-grid d-flex flex-column mt-3">
-        <p class="my-grid-item m-auto">Item</p>
-        <p class="my-grid-item m-auto">Item</p>
-        <p class="my-grid-item m-auto">Item</p>
-        <p class="my-grid-item m-auto">Item</p>
-        <p class="my-grid-item m-auto">Item</p>
-        <p class="my-grid-item m-auto">Item</p>
-    </div>
-</div>
+    $('.like-form').submit(function(e) {
+        e.preventDefault()
+
+        const post_id = $(this).attr('id')
+
+        const likeText = $(`.like-btn${post_id}`).text()
+        const trim = $.trim(likeText)
+
+        const url = $(this).attr('action')
+
+        let res;
+        const likes = $(`.like-count${post_id}`).text()
+        const trimCount = parseInt(likes)
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: {
+                'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                'post_id': post_id,
+
+            },
+            success: function(response) {
+                if (trim == 'Unlike') {
+                    $(`.like-btn${post_id}`).text('Like').css({ "font-weight": "bold", "margin-left": "1px" });
+                    res = trimCount - 1
+                } else {
+                    $(`.like-btn${post_id}`).text('Unlike').css({ "font-weight": "bold", "margin-left": "1px" });
+                    res = trimCount + 1
+                }
+
+                $(`.like-count${post_id}`).text(res + " likes").css({ "font-weight": "bold", "margin-left": "10px" });
+            },
+
+            error: function(response) {
+                console.log('error', response)
+            },
+        })
+
+
+
+    })
+});
+</script>
 {% endblock content %}

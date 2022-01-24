@@ -4,8 +4,9 @@ from django.views.generic import ListView, DetailView, CreateView
 from personal.models import Post, Like
 from account.models import Account
 from django.urls import reverse, reverse_lazy
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from .forms import *
+
 
 
 def home_screen_view(request, *args, **kwargs):
@@ -59,6 +60,14 @@ def like_unlike_post(request):
 
         post_obj.save()
         like.save()
+
+
+        data = {
+        'value':like.value,
+        'likes':post_obj.liked.all().count()
+        }
+
+        return JsonResponse(data, safe=False)
 
     return redirect ('home')
 
