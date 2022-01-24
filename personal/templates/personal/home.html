@@ -5,8 +5,8 @@
 <style type="text/css">
 .my-grid {
     border: 1px;
-   /* border-style: solid;
-    border-color: red; */
+  /* border-style: solid;
+    border-color: red;  */
     row-gap: 0;
     column-gap: 10px;
 }
@@ -20,7 +20,7 @@
 
 .my-grid-item {
     border: 1px;
-   /* border-style: solid;
+    /* border-style: solid;
     border-color: black; */
     column-gap: 3px;
 }
@@ -155,22 +155,26 @@ p.c {
                                 </button>
                             </p>
                         </form>
-                       
-                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" style=" font-weight:bold; border-color: transparent; color: black; background-color: transparent; margin-left:1px;   box-shadow: none; ">
-                               Comments
-                            </button>
-                      
+                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample{{post.id}}" aria-expanded="false" aria-controls="collapseExample{{post.id}}" style=" font-weight:bold; border-color: transparent; color: black; background-color: transparent; margin-left:1px;   box-shadow: none; ">
+                            Comments
+                        </button>
                     </div>
                     <div class="my-grid d-flex flex-row justify-content-between">
                         <p class="my-grid-item like-count{{post.id}}" style="margin-left:10px"> <b> {{post.num_likes}} likes</b></p>
                     </div>
                     <!-- post comments -->
-                    <div class="collapse" id="collapseExample">
+                    <div class="collapse" id="collapseExample{{post.id}}">
                         <div class="card card-body">
-                            <div class="my-grid d-flex flex-row justify-content-between">
-                                <p class="my-grid-item" style="margin-left:10px">post comments
-                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.</p>
+                            {% if not post.comments.all %}
+                            No comments yet.
+                            {% else %}
+                            {% for comment in post.comments.all %}
+                            <div class="my-grid d-flex flex-column">
+                                <div><a style=" text-decoration:none; color:black;" href="{% url 'account:view' user_id=comment.author.id %}"><b>{{comment.author}}:</b></a> {{comment.body}}
+                                </div>
                             </div>
+                            {% endfor %}
+                            {% endif %}
                         </div>
                     </div>
                     <!-- post time -->
@@ -196,52 +200,72 @@ p.c {
                 </div>
             </div>
         </div>
+        <!-- home style 
+    <div class="my-grid d-flex flex-row justify-content-between">
+        <p class="my-grid-item m-auto">Item</p>
+        <p class="my-grid-item m-auto">Item</p>
+        <p class="my-grid-item m-auto">Item</p>
+        <p class="my-grid-item m-auto">Item</p>
+        <p class="my-grid-item m-auto">Item</p>
+        <p class="my-grid-item m-auto">Item</p>
+        <p class="my-grid-item m-auto">Item <span class="material-icons">account_circle</span></p> 
+        <p class="my-grid-item m-auto">Item <img src="{% static 'images/default_pfp.png' %}"></p> 
     </div>
-<script type="text/javascript">
-$(document).ready(function() {
+    <div class="my-grid d-flex flex-column mt-3">
+        <p class="my-grid-item m-auto">Item</p>
+        <p class="my-grid-item m-auto">Item</p>
+        <p class="my-grid-item m-auto">Item</p>
+        <p class="my-grid-item m-auto">Item</p>
+        <p class="my-grid-item m-auto">Item</p>
+        <p class="my-grid-item m-auto">Item</p>
+    </div>
+</div>-->
+    </div>
+    <script type="text/javascript">
+    $(document).ready(function() {
 
-    $('.like-form').submit(function(e) {
-        e.preventDefault()
+        $('.like-form').submit(function(e) {
+            e.preventDefault()
 
-        const post_id = $(this).attr('id')
+            const post_id = $(this).attr('id')
 
-        const likeText = $(`.like-btn${post_id}`).text()
-        const trim = $.trim(likeText)
+            const likeText = $(`.like-btn${post_id}`).text()
+            const trim = $.trim(likeText)
 
-        const url = $(this).attr('action')
+            const url = $(this).attr('action')
 
-        let res;
-        const likes = $(`.like-count${post_id}`).text()
-        const trimCount = parseInt(likes)
+            let res;
+            const likes = $(`.like-count${post_id}`).text()
+            const trimCount = parseInt(likes)
 
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: {
-                'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
-                'post_id': post_id,
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                    'post_id': post_id,
 
-            },
-            success: function(response) {
-                if (trim == 'Unlike') {
-                    $(`.like-btn${post_id}`).text('Like').css({ "font-weight": "bold", "margin-left": "1px" });
-                    res = trimCount - 1
-                } else {
-                    $(`.like-btn${post_id}`).text('Unlike').css({ "font-weight": "bold", "margin-left": "1px" });
-                    res = trimCount + 1
-                }
+                },
+                success: function(response) {
+                    if (trim == 'Unlike') {
+                        $(`.like-btn${post_id}`).text('Like').css({ "font-weight": "bold", "margin-left": "1px" });
+                        res = trimCount - 1
+                    } else {
+                        $(`.like-btn${post_id}`).text('Unlike').css({ "font-weight": "bold", "margin-left": "1px" });
+                        res = trimCount + 1
+                    }
 
-                $(`.like-count${post_id}`).text(res + " likes").css({ "font-weight": "bold", "margin-left": "10px" });
-            },
+                    $(`.like-count${post_id}`).text(res + " likes").css({ "font-weight": "bold", "margin-left": "10px" });
+                },
 
-            error: function(response) {
-                console.log('error', response)
-            },
+                error: function(response) {
+                    console.log('error', response)
+                },
+            })
+
+
+
         })
-
-
-
-    })
-});
-</script>
-{% endblock content %}
+    });
+    </script>
+    {% endblock content %}

@@ -5,7 +5,7 @@
 <style type="text/css">
 .my-grid {
     border: 1px;
- 
+
     grid-row-gap: 0px;
     row-gap: 0;
     grid-column-gap: 0px;
@@ -22,7 +22,7 @@
 
 .my-grid-item {
     border: 1px;
-  
+
     column-gap: 3px;
     grid-row-gap: 0px;
     grid-column-gap: 0px;
@@ -59,6 +59,12 @@ p.c {
     display: flex;
     position: fixed;
 }
+
+.ss {
+    overflow-y: scroll;
+    height: 325px;
+}
+}
 </style>
 <div class="container">
     <div class="my-grid d-flex flex-row justify-content-between">
@@ -73,7 +79,7 @@ p.c {
                             <div class="my-grid d-flex flex-row justify-content-between">
                                 <!-- post picture -->
                                 <div class="my-grid-item m-auto">
-                                    <img class="img-fluid mx-auto d-block" src="{{post.post_image.url}}" alt="" width="700">
+                                    <img class="img-fluid " src="{{post.post_image.url}}" alt="" width="480px">
                                 </div>
                             </div>
                             {% endif %}
@@ -87,9 +93,10 @@ p.c {
                         </p>
                     </div>
                 </div>
-            </p>   
+            </p>
             <div style="border-left:1px solid #CFC8D1;height:100%"></div>
-            <p class="my-grid-item "><p class="my-grid-item">&nbsp</p>
+            <p class="my-grid-item ">
+                <p class="my-grid-item">&nbsp</p>
                 <div class="my-grid d-inline-flex flex-column">
                     <div class="my-grid-item d-inline-flex flex-row justify-content-start ">
                         <a style=" text-decoration:none; color:black;" class="d-inline-flex flex-row" href="{% url 'account:view' user_id=request.user.id %}">
@@ -97,16 +104,14 @@ p.c {
                             <p class="my-grid-item d-flex align-items-center center2"><b>&nbsp{{user.username}}</b></p>
                         </a>
                     </div>
-
-<hr style="height:1px;border-width:0;background-color:gray; margin:2px;">
-                  
+                    <hr style="height:1px;border-width:0;background-color:gray; margin:2px;">
                     <!-- comments -->
-                    <div class="my-grid d-flex flex-row justify-content-center align-items-center">
-                        <p class="my-grid-item m-auto" style="font-weight:bold;">
+                    <div class="my-grid d-flex flex-row justify-content-start align-items-center">
+                        <p class="my-grid-item m-1" style="font-weight:bold;">
                             Comments
                         </p>
                     </div>
-                    <p class="my-grid-item d-flex flex-row" style="width:390px;">post comments
+                    <p class="ss my-grid-item d-flex flex-row" style="width:390px;">post comments
                         Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sappost comments Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentpost comments Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentiente ea proident</p>
                 </div>
             </p>

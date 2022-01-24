@@ -43,3 +43,14 @@ class Like(models.Model):
     def __str__(self):
         return f"{self.user}-{self.post}- {self.value}"
     
+class Comment(models.Model):
+    post = models.ForeignKey(Post, related_name="comments", on_delete=models.CASCADE)
+    author = models.ForeignKey(Account, on_delete=models.CASCADE)
+    body = models.TextField()
+    date_added=models.DateTimeField(auto_now_add=True)
+
+    def str(self):
+        return str(self.author.username) + ' | ' + str(self.body)
+
+    def __str__(self):
+        return self.body 
