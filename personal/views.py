@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.views.generic import ListView, DetailView, CreateView
-from personal.models import Post, Like
+from personal.models import Post, Like, Comment
 from account.models import Account
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect, JsonResponse
@@ -12,6 +12,7 @@ from .forms import *
 def home_screen_view(request, *args, **kwargs):
     user=request.user
     posts=Post.objects.all()
+  
     account=Account.objects.get(username=user)
     context ={'posts': posts, 'account':account}
     if not request.user.is_authenticated:
@@ -21,7 +22,10 @@ def home_screen_view(request, *args, **kwargs):
 
 def postDetailView(request, pk):
     post=Post.objects.get(pk=pk)
-    context ={'post': post}
+    comments=Comment.objects.all()
+    user=request.user
+    account=Account.objects.get(username=user)
+    context ={'post': post, 'comments': comments, 'account':account}
     return render(request, "personal/post_details.html", context)
 
 def addPostView(request):
@@ -72,3 +76,16 @@ def like_unlike_post(request):
     return redirect ('home')
 
 
+def save_comment(request):
+    if request.method=='POST':
+        body=request.POST['comment']
+        post=request.POST['post']
+        author=request.user
+        post=Post.objects.get(pk=post)
+        Comment.objects.create(
+            post=post, 
+            author=author,
+            body=body 
+        )
+
+    return JsonResponse({'bool':True})

@@ -111,8 +111,18 @@ p.c {
                             Comments
                         </p>
                     </div>
-                    <p class="ss my-grid-item d-flex flex-row" style="width:390px;">post comments
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sappost comments Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentpost comments Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentAnim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proidentiente ea proident</p>
+                    <div class="comment-wrapper my-grid-item d-flex flex-column ss" style="width:390px;">
+                        {% for comment in post.comments.all %}
+                        <div class="my-grid d-flex flex-column">
+                            <div><a style=" text-decoration:none; color:black;" href="{% url 'account:view' user_id=comment.author.id %}"><b>{{comment.author}}:</b></a> {{comment.body}}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <p class="my-grid-item d-flex justify-content-center m-auto mt-3">
+                        <textarea class="form-control comment-text"></textarea>
+                        <button type="button" data-post="{{post.id}}" class="btn btn-dark save-comment">Comment</button>
+                    </p>
                 </div>
             </p>
         </div>
@@ -123,48 +133,37 @@ p.c {
 <script type="text/javascript">
 $(document).ready(function() {
 
-    $('.like-form').submit(function(e) {
-        e.preventDefault()
-
-        const post_id = $(this).attr('id')
-
-        const likeText = $(`.like-btn${post_id}`).text()
-        const trim = $.trim(likeText)
-
-        const url = $(this).attr('action')
-
-        let res;
-        const likes = $(`.like-count${post_id}`).text()
-        const trimCount = parseInt(likes)
+    $(".save-comment").on('click', function() {
+        var _comment = $(".comment-text").val();
+        var _postid = $(this).data('post');
 
         $.ajax({
-            type: 'POST',
-            url: url,
+            url: "{% url 'personal:save-comment' %}",
+            type: "POST",
             data: {
-                'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
-                'post_id': post_id,
-
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                comment: _comment,
+                post: _postid,
             },
-            success: function(response) {
-                if (trim == 'Unlike') {
-                    $(`.like-btn${post_id}`).text('Like').css({ "font-weight": "bold", "margin-left": "1px" });
-                    res = trimCount - 1
-                } else {
-                    $(`.like-btn${post_id}`).text('Unlike').css({ "font-weight": "bold", "margin-left": "1px" });
-                    res = trimCount + 1
+            dataType: 'json',
+
+            beforeSend: function() {
+                $(".save-comment").addClass('disabled').text('Saving...');
+            },
+            
+            success: function(res) {
+                if (res.bool == true) {
+                    $(".comment-text").val('');
+                    var _html = '<div class="my-grid d-flex flex-column">\
+                                    <div><a style=" text-decoration:none; color:black;" href="#"><b>{{request.user}}: </b></a>' + _comment + '\
+                                    </div>\
+                                </div>';
+                    $(".comment-wrapper").append(_html);
                 }
-
-                $(`.like-count${post_id}`).text(res + " likes").css({ "font-weight": "bold", "margin-left": "10px" });
+                $(".save-comment").removeClass('disabled').text('Comment');
             },
-
-            error: function(response) {
-                console.log('error', response)
-            },
-        })
-
-
-
-    })
+        });
+    });
 });
 </script>
 {% endblock content %}

@@ -5,7 +5,7 @@
 <style type="text/css">
 .my-grid {
     border: 1px;
-  /* border-style: solid;
+    /* border-style: solid;
     border-color: red;  */
     row-gap: 0;
     column-gap: 10px;
@@ -168,12 +168,12 @@ p.c {
                             {% if not post.comments.all %}
                             No comments yet.
                             {% else %}
-                            {% for comment in post.comments.all %}
-                            <div class="my-grid d-flex flex-column">
-                                <div><a style=" text-decoration:none; color:black;" href="{% url 'account:view' user_id=comment.author.id %}"><b>{{comment.author}}:</b></a> {{comment.body}}
+                                {% for comment in post.comments.all %}
+                                <div class="my-grid d-flex flex-column">
+                                    <div><a style=" text-decoration:none; color:black;" href="{% url 'account:view' user_id=comment.author.id %}"><b>{{comment.author}}:</b></a> {{comment.body}}
+                                    </div>
                                 </div>
-                            </div>
-                            {% endfor %}
+                                {% endfor %}
                             {% endif %}
                         </div>
                     </div>
@@ -200,72 +200,83 @@ p.c {
                 </div>
             </div>
         </div>
-        <!-- home style 
-    <div class="my-grid d-flex flex-row justify-content-between">
-        <p class="my-grid-item m-auto">Item</p>
-        <p class="my-grid-item m-auto">Item</p>
-        <p class="my-grid-item m-auto">Item</p>
-        <p class="my-grid-item m-auto">Item</p>
-        <p class="my-grid-item m-auto">Item</p>
-        <p class="my-grid-item m-auto">Item</p>
-        <p class="my-grid-item m-auto">Item <span class="material-icons">account_circle</span></p> 
-        <p class="my-grid-item m-auto">Item <img src="{% static 'images/default_pfp.png' %}"></p> 
     </div>
-    <div class="my-grid d-flex flex-column mt-3">
-        <p class="my-grid-item m-auto">Item</p>
-        <p class="my-grid-item m-auto">Item</p>
-        <p class="my-grid-item m-auto">Item</p>
-        <p class="my-grid-item m-auto">Item</p>
-        <p class="my-grid-item m-auto">Item</p>
-        <p class="my-grid-item m-auto">Item</p>
-    </div>
-</div>-->
-    </div>
-    <script type="text/javascript">
-    $(document).ready(function() {
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
 
-        $('.like-form').submit(function(e) {
-            e.preventDefault()
+    $('.like-form').submit(function(e) {
+        e.preventDefault()
 
-            const post_id = $(this).attr('id')
+        const post_id = $(this).attr('id')
 
-            const likeText = $(`.like-btn${post_id}`).text()
-            const trim = $.trim(likeText)
+        const likeText = $(`.like-btn${post_id}`).text()
+        const trim = $.trim(likeText)
 
-            const url = $(this).attr('action')
+        const url = $(this).attr('action')
 
-            let res;
-            const likes = $(`.like-count${post_id}`).text()
-            const trimCount = parseInt(likes)
+        let res;
+        const likes = $(`.like-count${post_id}`).text()
+        const trimCount = parseInt(likes)
 
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: {
-                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
-                    'post_id': post_id,
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: {
+                'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                'post_id': post_id,
 
-                },
-                success: function(response) {
-                    if (trim == 'Unlike') {
-                        $(`.like-btn${post_id}`).text('Like').css({ "font-weight": "bold", "margin-left": "1px" });
-                        res = trimCount - 1
-                    } else {
-                        $(`.like-btn${post_id}`).text('Unlike').css({ "font-weight": "bold", "margin-left": "1px" });
-                        res = trimCount + 1
-                    }
+            },
+            success: function(response) {
+                if (trim == 'Unlike') {
+                    $(`.like-btn${post_id}`).text('Like').css({ "font-weight": "bold", "margin-left": "1px" });
+                    res = trimCount - 1
+                } else {
+                    $(`.like-btn${post_id}`).text('Unlike').css({ "font-weight": "bold", "margin-left": "1px" });
+                    res = trimCount + 1
+                }
 
-                    $(`.like-count${post_id}`).text(res + " likes").css({ "font-weight": "bold", "margin-left": "10px" });
-                },
+                $(`.like-count${post_id}`).text(res + " likes").css({ "font-weight": "bold", "margin-left": "10px" });
+            },
 
-                error: function(response) {
-                    console.log('error', response)
-                },
-            })
-
-
-
+            error: function(response) {
+                console.log('error', response)
+            },
         })
+
+
+
     });
-    </script>
-    {% endblock content %}
+
+    $(".save-comment").on('click', function() {
+        var _comment = $(".comment-text").val();
+        var _postid = $(this).data('post');
+
+        $.ajax({
+            url: "{% url 'personal:save-comment' %}",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                comment: _comment,
+                post: _postid,
+            },
+            dataType: 'json',
+            beforeSend: function() {
+                $(".save-comment").addClass('disabled').text('Saving...');
+            },
+            success: function(res) {
+                if (res.bool == true) {
+                    $(".comment-text").val('');
+                    var _html = '<div class="my-grid d-flex flex-column">\
+                                    <div><a style=" text-decoration:none; color:black;" href="#"><b>{{request.user}}:</b></a>' + _comment + '\
+                                    </div>\
+                                </div>';
+                    $(".comment-wrapper").append(_html);
+                }
+                $(".save-comment").removeClass('disabled').text('Comment');
+            },
+        });
+    });
+});
+</script>
+{% endblock content %}
