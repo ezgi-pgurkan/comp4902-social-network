@@ -12,7 +12,8 @@ from .forms import *
 def home_screen_view(request, *args, **kwargs):
     user=request.user
     posts=Post.objects.all()
-    context ={'posts': posts}
+    account=Account.objects.get(username=user.username)
+    context ={'posts': posts, 'account': account}
     if not request.user.is_authenticated:
         return redirect('login')
     return render(request, "personal/home.html", context)
@@ -43,7 +44,7 @@ def like_unlike_post(request):
     if request.method == 'POST':
         post_id=request.POST.get('post_id')
         post_obj=Post.objects.get(id=post_id)
-        account=Account.objects.get(username=user)
+        account=Account.objects.get(username=user.username)
 
         if account in post_obj.liked.all():
             post_obj.liked.remove(account)
@@ -65,8 +66,8 @@ def like_unlike_post(request):
 
 
         data = {
-        'value':like.value,
-        'likes':post_obj.liked.all().count()
+            'value':like.value,
+            'likes':post_obj.liked.all().count()
         }
 
         return JsonResponse(data, safe=False)

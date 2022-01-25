@@ -82,7 +82,7 @@ p.c {
                             <p class="my-grid-item align-items-center m-auto">
                                 <a style=" text-decoration:none; color:black;" class="d-flex flex-row" href="{% url 'account:view' user_id=request.user.id %}">
                                     <div class="my-grid-item m-auto">
-                                        <img class="img-fluid mx-auto d-block" src="{{user.profile_image.url}}" alt="" width="75">
+                                        <img class="rounded-circle img-fluid mx-auto d-block" id="id_profile_links" src="{{user.profile_image.url}}" alt="default_pfp1" width="75" height="45">
                                     </div>
                                     <p class="my-grid-item d-flex align-items-center center2"><b>&nbsp{{user.username}}</b></p>
                                 </a>
@@ -168,12 +168,12 @@ p.c {
                             {% if not post.comments.all %}
                             No comments yet.
                             {% else %}
-                                {% for comment in post.comments.all %}
-                                <div class="my-grid d-flex flex-column">
-                                    <div><a style=" text-decoration:none; color:black;" href="{% url 'account:view' user_id=comment.author.id %}"><b>{{comment.author}}:</b></a> {{comment.body}}
-                                    </div>
+                            {% for comment in post.comments.all %}
+                            <div class="my-grid d-flex flex-column">
+                                <div><a style=" text-decoration:none; color:black;" href="{% url 'account:view' user_id=comment.author.id %}"><b>{{comment.author}}:</b></a> {{comment.body}}
                                 </div>
-                                {% endfor %}
+                            </div>
+                            {% endfor %}
                             {% endif %}
                         </div>
                     </div>
