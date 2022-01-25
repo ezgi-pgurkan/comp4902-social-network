@@ -12,8 +12,7 @@ from .forms import *
 def home_screen_view(request, *args, **kwargs):
     user=request.user
     posts=Post.objects.all()
-    account=Account.objects.get(username=user.username)
-    context ={'posts': posts, 'account': account}
+    context ={'posts': posts}
     if not request.user.is_authenticated:
         return redirect('login')
     return render(request, "personal/home.html", context)

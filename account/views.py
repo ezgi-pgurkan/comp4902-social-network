@@ -6,7 +6,6 @@ from account.forms import RegistrationForm, AccountAuthenticationForm, AccountUp
 from account.models import Account
 from django.db.models import Q
 
-
 def register(request, *args, **kwargs):
 	user = request.user
 	if user.is_authenticated: 
@@ -138,8 +137,8 @@ def edit_account_view(request, *args, **kwargs):
 	if request.POST:
 		form = AccountUpdateForm(request.POST, request.FILES, instance=request.user)
 		if form.is_valid():
+			account.profile_image.delete()
 			form.save()
-			new_username = form.cleaned_data['username']
 			return redirect("account:view", user_id=account.pk)
 		else:
 			form = AccountUpdateForm(request.POST, instance=request.user,

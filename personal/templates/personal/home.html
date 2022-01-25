@@ -147,7 +147,7 @@ p.c {
                             {% csrf_token %}
                             <p class="my-grid-item center">
                                 <button class="like-btn{{post.id}}" type="submit" name="post_id" value="{{post.id}}" style=" font-weight:bold; border-color: transparent; margin-left:2px;  color: #B80C04; background-color: transparent; border-radius:50%">
-                                    {% if account not in post.liked.all %}
+                                    {% if request.user not in post.liked.all %}
                                     Like
                                     {% else %}
                                     Unlike
