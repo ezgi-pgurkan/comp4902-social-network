@@ -43,7 +43,7 @@
         </div>
         <div class="d-flex flex-row justify-content-center align-items-center flex-grow-1">
             <!-- col2 -->
-            <form class="search-bar">
+            <form class="search-bar" onsubmit="return executeQuery();">
                 <input type="text" class="form-control" style="width: 350px" name="q" id="id_q_large" placeholder="Search...">
             </form>
         </div>
@@ -90,8 +90,8 @@
         <h5 class="font-weight-normal">
             <a href="{% url 'login' %}"><img class="img-fluid mx-auto d-block" src="{% static 'images/logo.png' %}" alt="devzone logo" width="200" height="100"></a>
         </h5>
-        <form class="search-bar justify-content-start">
-            <input type="text" class="form-control" name="q" id="id_q_small" placeholder="Search...">
+        <form class="search-bar justify-content-start" onsubmit="return executeQuery();">
+            <input type="text" class="form-control" name="q" id="id_q_small" placeholder="Search..." >
         </form>
         <div class="d-flex flex-row-reverse flex-grow-1">
             <nav class="">
@@ -129,4 +129,17 @@
     </div>
     <!-- END SMALL SCREENS -->
 </div>
+<script type="text/javascript">
+    function executeQuery() {
+        var query = ""
+        query = document.getElementById('id_q_small').value;
+        if (query == ""){
+            query = document.getElementById('id_q_large').value;
+        }
+        window.location.replace("{% url 'search' %}?q=" + query)
+        return false
+    }
+
+</script>
+
 {% endif %}

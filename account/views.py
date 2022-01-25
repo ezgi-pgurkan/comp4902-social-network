@@ -4,7 +4,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.conf import settings
 from account.forms import RegistrationForm, AccountAuthenticationForm
 from account.models import Account
-
+from django.db.models import Q
 
 
 def register(request, *args, **kwargs):
@@ -110,3 +110,17 @@ def account_view(request, *args, **kwargs):
 		context['is_self'] = is_self
 		context['BASE_URL'] = settings.BASE_URL
 		return render(request, "account/account.html", context)
+
+def account_search_view(request, *args, **kwargs):
+	context = {}
+	if request.method == "GET":
+		search_query = request.GET.get("q")
+		if len(search_query) > 0:
+			search_results = Account.objects.filter(Q(email__icontains=search_query)|Q(username__icontains=search_query)).distinct()
+			user = request.user
+			accounts = [] # [(account1, True), (account2, False), ...]
+			for account in search_results:
+				accounts.append((account, False))
+			context['accounts'] = accounts
+				
+	return render(request, "account/search_results.html", context)
