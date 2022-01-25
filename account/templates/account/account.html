@@ -111,7 +111,7 @@ span#mySpan {
                     <h5>{{username}}</h5>
                     <!-- If Auth user is viewing their own profile -->
                     {% if is_self %}
-                    <a class="mt-4 btn btn-primary" href="#">Update</a>
+                    <a class="mt-4 btn btn-primary" href="{% url 'account:edit' user_id=id %}">Update</a>
                     <div class="d-flex flex-column mt-4">
                         <a class="m-auto" href="#">Change password</a>
                     </div>
