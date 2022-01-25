@@ -146,7 +146,7 @@ p.c {
                         <form action="{% url 'personal:like-post-view' %}" method="POST" class="like-form" id="{{post.id}}">
                             {% csrf_token %}
                             <p class="my-grid-item center">
-                                <button class="like-btn{{post.id}}" type="submit" name="post_id" value="{{ post.id }}" style=" font-weight:bold; border-color: transparent; margin-left:2px;  color: #B80C04; background-color: transparent; border-radius:50%">
+                                <button class="like-btn{{post.id}}" type="submit" name="post_id" value="{{post.id}}" style=" font-weight:bold; border-color: transparent; margin-left:2px;  color: #B80C04; background-color: transparent; border-radius:50%">
                                     {% if account not in post.liked.all %}
                                     Like
                                     {% else %}
@@ -248,35 +248,7 @@ $(document).ready(function() {
 
     });
 
-    $(".save-comment").on('click', function() {
-        var _comment = $(".comment-text").val();
-        var _postid = $(this).data('post');
 
-        $.ajax({
-            url: "{% url 'personal:save-comment' %}",
-            type: "POST",
-            data: {
-                csrfmiddlewaretoken: "{{csrf_token}}",
-                comment: _comment,
-                post: _postid,
-            },
-            dataType: 'json',
-            beforeSend: function() {
-                $(".save-comment").addClass('disabled').text('Saving...');
-            },
-            success: function(res) {
-                if (res.bool == true) {
-                    $(".comment-text").val('');
-                    var _html = '<div class="my-grid d-flex flex-column">\
-                                    <div><a style=" text-decoration:none; color:black;" href="#"><b>{{request.user}}:</b></a>' + _comment + '\
-                                    </div>\
-                                </div>';
-                    $(".comment-wrapper").append(_html);
-                }
-                $(".save-comment").removeClass('disabled').text('Comment');
-            },
-        });
-    });
 });
 </script>
 {% endblock content %}
