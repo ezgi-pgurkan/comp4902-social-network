@@ -2,23 +2,21 @@ from django import forms
 from .models import *
 from django.forms import ModelForm
 
+
 class PostForm(forms.ModelForm):
+
     class Meta:
         model = Post
-        fields = ('text', 'post_image', 'author')
+        fields = ('text', 'post_image')
         widgets = {
-                    'text': forms.Textarea(attrs={'class': 'form-conrol', 'placeholder': 'Write a post...'}),
-                    'author': forms.TextInput(attrs={'class': 'form-conrol', 'value':'', 'id': 'elder', 'type':'hidden'}),
+                    'text': forms.Textarea(attrs={ 'cols':35, 'class': 'form-conrol', 'placeholder': 'Write a post...',  'style': ' border-radius: 8px;  padding: 12px;  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);',}),
                     }
-
 '''
 class CommentForm(forms.ModelForm):
+    body = forms.CharField(label='', 
+        widget=forms.TextInput(attrs={'placeholder': 'Add a comment...'}))
+
     class Meta:
         model = Comment
-        fields = ('post', 'author', 'body')
-        widgets = {
-            'author': forms.TextInput(attrs={'class': 'form-conrol', 'value':'', 'id': 'elder1', 'type':'hidden'}),
-            'body': forms.Textarea(attrs={'class': 'form-conrol', 'placeholder': 'Write your comment here...'}),
-            
-                    }
+        fields = ('body',)
 '''

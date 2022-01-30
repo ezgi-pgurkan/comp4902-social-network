@@ -27,16 +27,32 @@ def postDetailView(request, pk):
     return render(request, "personal/post_details.html", context)
 
 def addPostView(request):
+    user=request.user
     form=PostForm()
     if request.method=='POST':
         form=PostForm(request.POST, request.FILES)
         if form.is_valid():
             p=form.save()
             p.post_image=form.cleaned_data.get('post_image')
+            p.author=user
             p.save()
             return redirect('home')
     context={'form': form}
     return render(request, "personal/add_post.html", context)
+
+def editPostView(request, pk):
+    post=Post.objects.get(id=pk)
+    form=PostForm(instance=post)
+    if request.method=='POST':
+        form=PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            p=form.save()
+            p.post_image=form.cleaned_data.get('post_image')
+            p.save()
+            return redirect('home')
+    context={'form': form}
+    return render(request, "personal/edit_post.html", context)
+
 
 def like_unlike_post(request):
     user=request.user

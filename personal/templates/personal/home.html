@@ -5,8 +5,8 @@
 <style type="text/css">
 .my-grid {
     border: 1px;
-    /* border-style: solid;
-    border-color: red;  */
+   /*  border-style: solid;
+    border-color: red;*/
     row-gap: 0;
     column-gap: 10px;
 }
@@ -20,8 +20,8 @@
 
 .my-grid-item {
     border: 1px;
-    /* border-style: solid;
-    border-color: black; */
+   /*  border-style: solid;
+    border-color: black;*/
     column-gap: 3px;
 }
 
@@ -122,6 +122,9 @@ p.c {
                                     <a style=" text-decoration:none; color:black;" class="dropdown-item" href="{% url 'personal:postdetail' post.pk %}">
                                         Go to post
                                     </a>
+                                    <a style=" text-decoration:none; color:black;" class="dropdown-item" href="{% url 'personal:edit-post' post.pk %}">
+                                        Edit post
+                                    </a>
                                 </div>
                             </a>
                         </div>
@@ -138,29 +141,32 @@ p.c {
                     {% endif %}
                     <!-- post text -->
                     <div class="my-grid d-flex flex-row justify-content-start">
-                        <p class="my-grid-item" style="margin-left:10px;"><b>{{post.author.username}}&nbsp</b></p>
-                        <p class="c" style="margin-right:10px">{{post.text}}</p>
+                        <p class="my-grid-item c" style="margin-left:10px; margin-bottom: 0; margin-right:8px;"><b>{{post.author.username}}&nbsp</b>{{post.text}}</p>
                     </div>
                     <!-- like & comment icons -->
-                    <div class="my-grid d-flex flex-row justify-content-start align-items-center">
-                        <form action="{% url 'personal:like-post-view' %}" method="POST" class="like-form" id="{{post.id}}">
-                            {% csrf_token %}
-                            <p class="my-grid-item center">
-                                <button class="like-btn{{post.id}}" type="submit" name="post_id" value="{{post.id}}" style=" font-weight:bold; border-color: transparent; margin-left:2px;  color: #B80C04; background-color: transparent; border-radius:50%">
+                    <div class="my-grid d-flex flex-row justify-content-start">
+                        <div class="my-grid d-flex flex-row" style=" column-gap: 0; margin-bottom: 0; align-items: center;">
+                            <form action="{% url 'personal:like-post-view' %}" method="POST" class="like-form" id="{{post.id}}">
+                                {% csrf_token %}
+                                <button class="like-btn{{post.id}}" type="submit" name="post_id" value="{{post.id}}" style=" font-weight:bold; border-color: transparent; color: #B80C04; margin-bottom: 0; background-color: transparent; border-radius:50%">
                                     {% if request.user not in post.liked.all %}
-                                    Like
+                                    <span class="material-icons-outlined md-36">
+                                        favorite_border
+                                    </span>
                                     {% else %}
-                                    Unlike
+                                    <span class="material-icons-outlined md-36">
+                                        favorite
+                                    </span>
                                     {% endif %}
                                 </button>
-                            </p>
-                        </form>
-                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample{{post.id}}" aria-expanded="false" aria-controls="collapseExample{{post.id}}" style=" font-weight:bold; border-color: transparent; color: black; background-color: transparent; margin-left:1px;   box-shadow: none; ">
-                            Comments
-                        </button>
+                            </form>
+                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample{{post.id}}" aria-expanded="false" aria-controls="collapseExample{{post.id}}" style=" font-weight:bold; border-color: transparent; margin-bottom: 0; color: black; background-color: transparent;    box-shadow: none; ">
+                                <i class="fas fa-comments fa-2x"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="my-grid d-flex flex-row justify-content-between">
-                        <p class="my-grid-item like-count{{post.id}}" style="margin-left:10px"> <b> {{post.num_likes}} likes</b></p>
+                        <p class="my-grid-item like-count{{post.id}}" style="margin-left:10px; margin-bottom: 5px; margin-top: 0;"> <b> {{post.num_likes}} likes</b></p>
                     </div>
                     <!-- post comments -->
                     <div class="collapse" id="collapseExample{{post.id}}">
@@ -228,11 +234,11 @@ $(document).ready(function() {
 
             },
             success: function(response) {
-                if (trim == 'Unlike') {
-                    $(`.like-btn${post_id}`).text('Like').css({ "font-weight": "bold", "margin-left": "1px" });
+                if (trim == 'favorite') {
+                    $(`.like-btn${post_id} span`).text('favorite_border').css({ "font-weight": "bold", "margin-left": "1px" });
                     res = trimCount - 1
                 } else {
-                    $(`.like-btn${post_id}`).text('Unlike').css({ "font-weight": "bold", "margin-left": "1px" });
+                    $(`.like-btn${post_id} span`).text('favorite').css({ "font-weight": "bold", "margin-left": "1px" });
                     res = trimCount + 1
                 }
 

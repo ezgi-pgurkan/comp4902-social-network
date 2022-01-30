@@ -9,6 +9,8 @@ app_name = 'personal'
 urlpatterns = [
     path('post/<int:pk>', views.postDetailView, name='postdetail'),
     path('add_post/', views.addPostView, name='add-post'),
+    path('edit_post/<str:pk>', views.editPostView, name='edit-post'),
+
     path('liked/', views.like_unlike_post, name='like-post-view'),
     path('save-comment/', views.save_comment, name='save-comment'),
 ] 

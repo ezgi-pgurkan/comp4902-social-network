@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+
 <style type="text/css">
 .my-grid {
     border: 1px;
@@ -17,7 +18,7 @@
     <div class="my-grid d-flex flex-row justify-content-center">
         <div class="my-grid d-flex flex-column mt-3">
             <h3 class="my-grid-item d-flex justify-content-center m-auto">
-                Create new post
+               Edit your post
             </h3>
             <p class="my-grid-item m-auto">
                 <form action="" method="POST" accept-charset="utf-8" enctype="multipart/form-data">
@@ -26,22 +27,18 @@
                         {{form.text}}
                     </p>
                     <h6 class="my-grid-item d-flex justify-content-start m-auto mt-2">
-                        Select a picture from computer (optional): </h6>
-                    <p class="my-grid-item d-flex justify-content-start m-auto mt-2">
+                        &nbspSelect a picture from computer: </h6>
+                    <p class="my-grid-item d-flex flex-column col-11 justify-content-start m-auto mt-2">
+
                         {{form.post_image}}
                     </p>
                     {{form.author}}
                     <p class="my-grid-item d-flex justify-content-center m-auto mt-3">
-                        <button type="submit" class="btn btn-dark">Create new post</button>
+                        <button type="submit" class="btn btn-dark">Edit post</button>
                     </p>
                 </form>
             </p>
         </div>
     </div>
 </div>
-
-<script>
-var name = "{{user.id}}";
-document.getElementById("elder").value = name;
-</script>
 {% endblock content %}

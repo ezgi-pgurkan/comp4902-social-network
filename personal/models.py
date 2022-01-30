@@ -9,7 +9,7 @@ def get_post_image_filepath(self, filename):
 class Post(models.Model):
     text = models.TextField()
     post_image = models.ImageField(null=True, blank=True, upload_to=get_post_image_filepath)
-    author = models.ForeignKey(Account, on_delete=models.CASCADE)
+    author = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
     date_added=models.DateTimeField(auto_now_add=True)
     liked = models.ManyToManyField(Account, related_name="postlikes", blank=True)
 
