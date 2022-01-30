@@ -4,6 +4,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.conf import settings
 from account.forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm
 from account.models import Account
+from personal.models import Post, Like, Comment
 from django.db.models import Q
 
 def register(request, *args, **kwargs):
@@ -84,10 +85,12 @@ def account_view(request, *args, **kwargs):
 				0: THEM_SENT_TO_YOU
 				1: YOU_SENT_TO_THEM
 	"""
+
 	context = {}
 	user_id = kwargs.get("user_id")
 	try:
 		account = Account.objects.get(pk=user_id)
+		posts=Post.objects.filter(author=account)
 	except:
 		return HttpResponse("Something went wrong.")
 	if account:
@@ -108,6 +111,7 @@ def account_view(request, *args, **kwargs):
 		# Set the template variables to the values
 		context['is_self'] = is_self
 		context['BASE_URL'] = settings.BASE_URL
+		context['posts'] = posts
 		return render(request, "account/account.html", context)
 
 def account_search_view(request, *args, **kwargs):
@@ -164,6 +168,12 @@ def edit_account_view(request, *args, **kwargs):
 		context['form'] = form
 	context['DATA_UPLOAD_MAX_MEMORY_SIZE'] = settings.DATA_UPLOAD_MAX_MEMORY_SIZE
 	return render(request, "account/edit_account.html", context)
+
+def profile_view(request, *args, **kwargs):
+    user=request.user
+    posts=Post.objects.all()
+    context ={'posts': posts}
+    return render(request, "account/profile_page.html", context)
 
 
 

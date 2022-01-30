@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView,DeleteView
 from personal.models import Post, Like, Comment
 from account.models import Account
 from django.urls import reverse, reverse_lazy
@@ -53,6 +53,14 @@ def editPostView(request, pk):
     context={'form': form}
     return render(request, "personal/edit_post.html", context)
 
+def deletePostView(request, pk):
+    post=Post.objects.get(id=pk)
+    if request.method=='POST':
+        post.delete()
+        next = request.POST.get('next', '/')
+        return HttpResponseRedirect(next)
+    context={}
+    return render(request, "personal/delete_post.html", context)
 
 def like_unlike_post(request):
     user=request.user

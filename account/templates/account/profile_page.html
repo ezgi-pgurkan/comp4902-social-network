@@ -73,32 +73,6 @@ p.c {
 </style>
 <div class="container">
     <div class="my-grid d-flex flex-row justify-content-between">
-        <!-- profile info -->
-        <div class="my-grid d-flex flex-column col-3">
-            <div class="my-grid d-flex flex-row justify-content-center">
-                <div class="sidebar">
-                    <div class="d-flex flex-column">
-                        <div class="d-flex flex-row">
-                            <p class="my-grid-item align-items-center m-auto">
-                                <a style=" text-decoration:none; color:black;" class="d-flex flex-row" href="{% url 'account:view' user_id=request.user.id %}">
-                                    <div class="my-grid-item m-auto">
-                                        <img class="rounded-circle img-fluid mx-auto d-block" id="id_profile_links" src="{{user.profile_image.url}}" alt="default_pfp1" width="75" height="45">
-                                    </div>
-                                    <p class="my-grid-item d-flex align-items-center center2"><b>&nbsp{{user.username}}</b></p>
-                                </a>
-                            </p>
-                        </div>
-                        <br>
-                        <div class="d-flex flex-row">
-                            <p class="my-grid-item align-items-center m-auto ">
-                                INFO
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- POSTS -->
         <div class="my-grid d-flex flex-column col-5 mt-4">
             {% for post in posts %}
             <p class="my-grid-item m-auto">
@@ -194,25 +168,9 @@ p.c {
             </p>
             {% endfor %}
         </div>
-        <div class="my-grid d-flex flex-column col-3">
-            <div class="my-grid d-flex flex-row justify-content-center">
-                <div class="sidebar">
-                    <div class="d-flex flex-row">
-                        <p class="my-grid-item align-items-center m-auto ">
-                            <br>
-                            <br>
-                            <a style="text-decoration:none; color:black" href="{% url 'personal:add-post' %}">
-                                <button type="button" class="btn btn-dark">Create new post</button>
-                            </a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 <script type="text/javascript">
-
 $(document).ready(function() {
 
     $('.like-form').submit(function(e) {

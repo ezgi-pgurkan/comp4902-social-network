@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style type="text/css">
+.my-grid {
+    border: 1px;
+    row-gap: 1px;
+    column-gap: 7px;
+}
+
+.my-grid-item {
+    border: 1px;
+    column-gap: 3px;
+}
+</style>
+<div class="container">
+    <div class="my-grid d-flex flex-row justify-content-center">
+        <div class="my-grid d-flex flex-column mt-3">
+            <h2 class="my-grid-item d-flex justify-content-center m-auto"><b> Delete Post</b>
+            </h2>
+            <br>
+            <h5 style="font-weight:normal;">Are you sure you want to delete this post?</h5>
+            <p class="my-grid-item m-auto">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <p class="my-grid-item d-flex justify-content-center m-auto mt-3">
+                        <input type="hidden" name="next" value="{{ request.GET.next }}">
+                        <a href="javascript:window.history.back()"><button type="button" class="btn btn-primary">Cancel</button></a>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </p>
+                </form>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock content %}
