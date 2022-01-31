@@ -24,7 +24,7 @@ class Post(models.Model):
 
     def num_likes(self):
         return self.liked.all().count()
-
+        
     class Meta:
         ordering = ['-date_added']
 

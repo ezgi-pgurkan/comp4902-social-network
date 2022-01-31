@@ -180,9 +180,32 @@ def add_user_data(sender, **kwargs):
 
 
 def profile_view(request, *args, **kwargs):
+	context = {}
 	user_id = kwargs.get("user_id")
-	posts=Post.objects.filter(author=user_id)
-	context ={ 'posts': posts}
+	try:
+		account = Account.objects.get(pk=user_id)
+		posts=Post.objects.filter(author=user_id)
+	except:
+		return HttpResponse("Something went wrong.")
+	if account:
+		context['id'] = account.id
+		context['username'] = account.username
+		context['email'] = account.email
+		context['profile_image'] = account.profile_image.url
+		context['hide_email'] = account.hide_email
+
+		# Define template variables
+		is_self = True
+		user = request.user
+		if user.is_authenticated and user != account:
+			is_self = False
+		elif not user.is_authenticated:
+			is_self = False
+			
+		# Set the template variables to the values
+		context['is_self'] = is_self
+		context['BASE_URL'] = settings.BASE_URL
+		context['posts'] = posts
 	return render(request, "account/profile_page.html", context)
 
 def addProfileView(request,  *args, **kwargs):

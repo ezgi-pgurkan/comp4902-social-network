@@ -5,8 +5,7 @@
 <style type="text/css">
 .my-grid {
     border: 1px;
-    /*  border-style: solid;
-    border-color: red;*/
+
     row-gap: 0;
     column-gap: 10px;
 }
@@ -20,8 +19,7 @@
 
 .my-grid-item {
     border: 1px;
-    /*  border-style: solid;
-    border-color: black;*/
+    ;
     column-gap: 3px;
 }
 
@@ -43,6 +41,11 @@
 
 .center {
     margin: 0px 0px 0px 0px;
+    padding: 0px;
+}
+
+.center1 {
+    margin: 10px 0px 0px 0px;
     padding: 0px;
 }
 
@@ -70,12 +73,62 @@ p.c {
     display: flex;
     position: fixed;
 }
+
+.p-container {
+    max-height: 150px;
+}
 </style>
 <div class="container">
-    <div class="my-grid d-flex flex-row justify-content-between">
+    <div class="my-grid d-flex flex-row justify-content-center">
+        <div class="my-grid d-flex flex-column justify-content-center col-3">
+            <div class="image-container mx-auto mb-4">
+                <img class="d-block border border-dark rounded-circle img-fluid mx-auto profile-image p-container" alt="default_pfp" id="id_profile_image" src="{% static 'images/default_pfp.png' %}">
+            </div>
+        </div>
+        <div class="my-grid d-flex flex-column justify-content-center col-5">
+            <div class="my-grid d-flex flex-row justify-content-start ">
+                <div class="d-flex flex-row align-items-center center1">
+                    <p><b>{{user.username}}</b></p>
+                </div>
+                {% if request.user.is_authenticated %}
+                <div class="d-flex flex-row align-items-center btn btn-light m-2 px-4" onclick="createOrReturnPrivateChat('{{id}}')">
+                    <a style=" text-decoration:none; color:black; " href="{% url 'directmessage:direct-message-room' %}">
+                        <div style="text-align:right;">
+                            <span style="float:left" class="material-icons-outlined m-auto">
+                                mail
+                            </span>
+                            <span class="message-btn-text m-auto pl-2 "> &nbsp Message</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="d-flex flex-row align-items-center btn btn-light m-2 px-4">
+                    <a style=" text-decoration:none; color:black " href="#">
+                        <div style="text-align:right;">
+                            <span style="float:left" class="material-icons-outlined m-auto">
+                                person_add_alt
+                            </span>
+                            <span class="message-btn-text m-auto pl-2 "> &nbsp Follow</span>
+                        </div>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            <div class="my-grid d-flex flex-row justify-content-between">
+                <p><b> {{posts|length}} </b>posts</p>
+                <p><b>10 </b>Followers</p>
+                <p><b>22 </b>Following</p>
+                <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</p>
+            </div>
+            <div class="my-grid d-flex flex-row align-items-center center1">
+                {{user.email}}
+            </div>
+        </div>
+    </div>
+    <hr style="color:#8B8585">
+    <div class="my-grid d-flex flex-row justify-content-center">
         <div class="my-grid d-flex flex-column col-5 mt-4">
-
-
+        </div>
+        <div class="my-grid d-flex flex-column col-5 mt-4">
             {% for post in posts %}
             <p class="my-grid-item m-auto">
                 <div class="my-grid my-gridbc d-flex flex-column">
@@ -173,6 +226,9 @@ p.c {
     </div>
 </div>
 <script type="text/javascript">
+preloadImage("{{profile_image|safe}}", "id_profile_image")
+
+
 $(document).ready(function() {
 
     $('.like-form').submit(function(e) {
@@ -221,4 +277,5 @@ $(document).ready(function() {
 
 });
 </script>
+{% include 'directmessage/snippets/create_or_return_private_chat.html' %}
 {% endblock content %}
