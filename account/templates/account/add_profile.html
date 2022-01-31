@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style type="text/css">
+.my-grid {
+    border: 1px;
+    row-gap: 1px;
+    column-gap: 7px;
+}
+
+.my-grid-item {
+    border: 1px;
+    column-gap: 3px;
+}
+
+</style>
+<div class="container">
+    <div class="my-grid d-flex flex-row justify-content-center">
+        <div class="my-grid d-flex flex-column mt-3">
+            <h3 class="my-grid-item d-flex justify-content-center m-auto">
+                ADD INFO:
+            </h3>
+            <p class="my-grid-item m-auto">
+                <form action="" method="POST" accept-charset="utf-8" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="my-grid d-flex flex-row">
+                        <div class="my-grid d-flex flex-column justify-content-center align-items-center col-5">
+                            <br>
+                            {{form.about}}
+                            <br>
+                            {{form.tech_stack}}
+                             <br>
+                            {{form.learning}}
+                             <br>
+                            {{form.hobbies}}
+                            <br>
+                        </div>
+                        <div class="my-grid d-flex flex-column justify-content-center align-items-center col-2"> </div>
+                        <div class="my-grid d-flex flex-column justify-content-center align-items-center col-5">
+                             <br>
+                            {{form.music}}
+                             <br>
+                            {{form.tvshows}}
+                             <br>
+                            {{form.movies}}
+                             <br>
+                            {{form.books}}
+                            <br>
+                        </div>
+                         {{form.profile}}
+                    </div>
+                    <p class="my-grid-item d-flex justify-content-center m-auto mt-3">
+                        <button type="submit" class="btn btn-dark">Add your info</button>
+                    </p>
+                </form>
+            </p>
+        </div>
+    </div>
+</div>
+<script>
+var name2 = "{{user.id}}";
+document.getElementById("elder2").value = name2;
+</script>
+{% endblock content %}

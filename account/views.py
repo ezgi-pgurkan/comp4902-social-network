@@ -2,16 +2,18 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from django.conf import settings
-from account.forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm
-from account.models import Account
+from account.forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm, ProfileForm
+from account.models import Account, Profile
 from personal.models import Post, Like, Comment
 from django.db.models import Q
+from django.core.exceptions import MultipleObjectsReturned
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 def register(request, *args, **kwargs):
 	user = request.user
 	if user.is_authenticated: 
 		return HttpResponse("You are already authenticated as " + str(user.email))
-
 	context = {}
 	if request.POST:
 		form = RegistrationForm(request.POST)
@@ -27,7 +29,6 @@ def register(request, *args, **kwargs):
 			return redirect('home')
 		else:
 			context['registration_form'] = form
-
 	else:
 		form = RegistrationForm()
 		context['registration_form'] = form
@@ -90,7 +91,6 @@ def account_view(request, *args, **kwargs):
 	user_id = kwargs.get("user_id")
 	try:
 		account = Account.objects.get(pk=user_id)
-		posts=Post.objects.filter(author=account)
 	except:
 		return HttpResponse("Something went wrong.")
 	if account:
@@ -111,7 +111,6 @@ def account_view(request, *args, **kwargs):
 		# Set the template variables to the values
 		context['is_self'] = is_self
 		context['BASE_URL'] = settings.BASE_URL
-		context['posts'] = posts
 		return render(request, "account/account.html", context)
 
 def account_search_view(request, *args, **kwargs):
@@ -169,12 +168,35 @@ def edit_account_view(request, *args, **kwargs):
 	context['DATA_UPLOAD_MAX_MEMORY_SIZE'] = settings.DATA_UPLOAD_MAX_MEMORY_SIZE
 	return render(request, "account/edit_account.html", context)
 
-def profile_view(request, *args, **kwargs):
-    user=request.user
-    posts=Post.objects.all()
-    context ={'posts': posts}
-    return render(request, "account/profile_page.html", context)
+@receiver([post_save], sender=Account)
+def add_user_data(sender, **kwargs):
+    user = kwargs.get('instance')
 
+    try:
+        profile, profile_created = Profile.objects.get_or_create(profile=user,
+          )
+    except MultipleObjectsReturned:
+        pass
+
+
+def profile_view(request, *args, **kwargs):
+	user_id = kwargs.get("user_id")
+	posts=Post.objects.filter(author=user_id)
+	context ={ 'posts': posts}
+	return render(request, "account/profile_page.html", context)
+
+def addProfileView(request,  *args, **kwargs):
+	user=request.user
+	form=ProfileForm()
+	if request.method=='POST':
+		form=ProfileForm(request.POST)
+		if form.is_valid():
+			p=form.save()
+			p.profile=user
+			p.save()
+			return redirect('home')
+	context={'form': form}
+	return render(request, "account/add_profile.html", context)
 
 
 

@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate
 
-from account.models import Account
+from account.models import Account, Profile
 
 
 class RegistrationForm(UserCreationForm):
@@ -75,3 +75,21 @@ class AccountUpdateForm(forms.ModelForm):
         if commit:
             account.save()
         return account
+
+
+class ProfileForm(forms.ModelForm):
+
+    class Meta:
+        model = Profile
+        fields = ('profile', 'about', 'tech_stack', 'learning', 'hobbies', 'music', 'tvshows', 'movies', 'books')
+        widgets = {
+                    'profile': forms.TextInput(attrs={'class': 'form-conrol', 'value':'', 'id': 'elder2', 'type':'hidden'}),
+                    'about': forms.Textarea(attrs={ 'cols':50, 'rows':2, 'placeholder': 'Your self-summary...', 'style': ' border-radius: 8px;  padding: 12px;  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);',}),
+                    'tech_stack': forms.Textarea(attrs={'cols':50, 'rows':2,  'placeholder': 'The programming languages, frameworks, and tools that you currently know/use...', 'style': ' border-radius: 8px;  padding: 12px;  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);',}),
+                    'learning': forms.Textarea(attrs={'cols':50, 'rows':2,  'placeholder': 'The programming languages, frameworks, and tools that you are learning at the moment...', 'style': ' border-radius: 8px;  padding: 12px;  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);',}),
+                    'hobbies': forms.Textarea(attrs={ 'cols':50, 'rows':2, 'placeholder': 'Your interests/hobbies...', 'style': ' border-radius: 8px;  padding: 12px;  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);',}),
+                    'music': forms.Textarea(attrs={ 'cols':50, 'rows':2, 'placeholder': 'Your favorite music...', 'style': ' border-radius: 8px;  padding: 12px;  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);',}),
+                    'tvshows': forms.Textarea(attrs={ 'cols':50, 'rows':2, 'placeholder': 'Your favorite movies...', 'style': ' border-radius: 8px;  padding: 12px;  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);',}),
+                    'movies': forms.Textarea(attrs={ 'cols':50, 'rows':2,'placeholder': 'Your favorite movies...', 'style': ' border-radius: 8px;  padding: 12px;  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);',}),
+                    'books': forms.Textarea(attrs={'cols':50, 'rows':2, 'placeholder': 'Your favorite books...', 'style': ' border-radius: 8px;  padding: 12px;  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);',}),
+                  }

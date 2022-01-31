@@ -82,7 +82,7 @@ p.c {
                             <p class="my-grid-item align-items-center m-auto">
                                 <a style=" text-decoration:none; color:black;" class="d-flex flex-row" href="{% url 'account:view' user_id=request.user.id %}">
                                     <div class="my-grid-item m-auto">
-                                        <img class="rounded-circle img-fluid mx-auto d-block" id="id_profile_links" src="{{user.profile_image.url}}" alt="default_pfp1" width="75" height="45">
+                                        <img class="rounded-circle img-fluid mx-auto d-block" id="id_profile_links" src="{% static 'images/default_pfp.png' %}" alt="default_pfp" width="75" height="45">
                                     </div>
                                     <p class="my-grid-item d-flex align-items-center center2"><b>&nbsp{{user.username}}</b></p>
                                 </a>
@@ -212,6 +212,9 @@ p.c {
     </div>
 </div>
 <script type="text/javascript">
+
+    preloadImage("{{profile_image|safe}}", "id_profile_image")
+
 
 $(document).ready(function() {
 

@@ -129,7 +129,7 @@
             <div class="card" id="id_chatroom_card">
                 <div class="d-flex flex-row align-items-center card-header" id="id_room_title">
                 <a style=" text-decoration:none; color:black;" class="d-flex flex-row" target="_blank" id="id_user_info_container">
-                    <img class="profile-image rounded-circle img-fluid" id="id_other_user_profile_image" src="{% static 'images/default_pfp1.jpg' %}">
+                    <img class="profile-image rounded-circle img-fluid" id="id_other_user_profile_image" src="{% static 'images/default_pfp.png' %}">
                     <h3>&nbsp</h3>
                     <h3 class="ml-2" id="id_other_username"></h3>
                 </a>
@@ -169,7 +169,7 @@
                     <div class="d-flex flex-column friends-list-container ">
                         {% for x in m_and_r %}
                         <div class="d-flex flex-row p-2 friend-container flex-grow-1" onclick="onSelectRecipient('{{x.recipient.id}}')" id="id_friend_container_{{x.recipient.id}}">
-                            <img class="profile-image rounded-circle img-fluid" id="id_friend_img_{{x.recipient.id}}" src="{% static 'images/default_pfp1.jpg' %}" >
+                            <img class="profile-image rounded-circle img-fluid" id="id_friend_img_{{x.recipient.id}}" src="{% static 'images/default_pfp.png' %}" >
                             <div class="d-flex flex-column">
                                 <span class="username-span">{{x.recipient.username}}</span>
                                 <span class="friend-message-span">{{x.message|truncatechars:20}}</span>
@@ -423,7 +423,7 @@ function createChatMessageElement(msg, msg_id, username, profile_image, user_id,
     profileImage.classList.add("profile-image")
     profileImage.classList.add("rounded-circle")
     profileImage.classList.add("img-fluid")
-    profileImage.src = "{% static 'images/default_pfp1.jpg' %}"
+    profileImage.src = "{% static 'images/default_pfp.png' %}"
     var profile_image_id = "id_profile_image_" + msg_id
     profileImage.id = profile_image_id
     newMessageDiv.appendChild(profileImage)
@@ -522,7 +522,7 @@ function createConnectedDisconnectedElement(msg, msd_id, profile_image, user_id)
     profileImage.classList.add("profile-image")
     profileImage.classList.add("rounded-circle")
     profileImage.classList.add("img-fluid")
-    profileImage.src = "{% static 'images/default_pfp1.jpg' %}"
+    profileImage.src = "{% static 'images/default_pfp.png' %}"
     var profile_image_id = "id_profile_image_" + msg_id
     profileImage.id = profile_image_id
     newMessageDiv.appendChild(profileImage)
@@ -637,7 +637,7 @@ function clearHighlightedFriend(){
 
     // clear the profile image and username of current chat
     document.getElementById("id_other_user_profile_image").classList.add("d-none")
-    document.getElementById("id_other_user_profile_image").src = "{% static 'images/default_pfp1.jpg' %}"
+    document.getElementById("id_other_user_profile_image").src = "{% static 'images/default_pfp.png' %}"
     document.getElementById("id_other_username").innerHTML = ""
 }
 
