@@ -80,6 +80,9 @@ p.c {
 </style>
 <div class="container">
     <div class="my-grid d-flex flex-row justify-content-center">
+      <a style="text-decoration:none; color:black" href="{% url 'account:edit-profile' user.id %}">
+                                <button type="button" class="btn btn-dark">edit</button>
+                            </a>
         <div class="my-grid d-flex flex-column justify-content-center col-3">
             <div class="image-container mx-auto mb-4">
                 <img class="d-block border border-dark rounded-circle img-fluid mx-auto profile-image p-container" alt="default_pfp" id="id_profile_image" src="{% static 'images/default_pfp.png' %}">
@@ -119,7 +122,7 @@ p.c {
                 <p><b>22 </b>Following</p>
                 <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</p>
             </div>
-            <div class="my-grid d-flex flex-row align-items-center center1">
+            <div class="my-grid d-flex flex-row align-items-center ">
                 {{user.email}}
             </div>
         </div>
@@ -127,6 +130,8 @@ p.c {
     <hr style="color:#8B8585">
     <div class="my-grid d-flex flex-row justify-content-center">
         <div class="my-grid d-flex flex-column col-5 mt-4">
+
+            
         </div>
         <div class="my-grid d-flex flex-column col-5 mt-4">
             {% for post in posts %}

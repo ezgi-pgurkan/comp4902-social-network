@@ -8,7 +8,6 @@ from django.http import HttpResponseRedirect, JsonResponse
 from .forms import *
 
 
-
 def home_screen_view(request, *args, **kwargs):
     user=request.user
     posts=Post.objects.all()

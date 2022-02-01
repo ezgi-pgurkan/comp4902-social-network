@@ -81,9 +81,8 @@ class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ('profile', 'about', 'tech_stack', 'learning', 'hobbies', 'music', 'tvshows', 'movies', 'books')
+        fields = ('about', 'tech_stack', 'learning', 'hobbies', 'music', 'tvshows', 'movies', 'books')
         widgets = {
-                    'profile': forms.TextInput(attrs={'class': 'form-conrol', 'value':'', 'id': 'elder2', 'type':'hidden'}),
                     'about': forms.Textarea(attrs={ 'cols':50, 'rows':2, 'placeholder': 'Your self-summary...', 'style': ' border-radius: 8px;  padding: 12px;  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);',}),
                     'tech_stack': forms.Textarea(attrs={'cols':50, 'rows':2,  'placeholder': 'The programming languages, frameworks, and tools that you currently know/use...', 'style': ' border-radius: 8px;  padding: 12px;  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);',}),
                     'learning': forms.Textarea(attrs={'cols':50, 'rows':2,  'placeholder': 'The programming languages, frameworks, and tools that you are learning at the moment...', 'style': ' border-radius: 8px;  padding: 12px;  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);',}),
