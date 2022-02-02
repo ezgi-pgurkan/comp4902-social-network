@@ -19,7 +19,7 @@
 
 .my-grid-item {
     border: 1px;
-    ;
+
     column-gap: 3px;
 }
 
@@ -77,12 +77,17 @@ p.c {
 .p-container {
     max-height: 150px;
 }
+
+div {
+    text-align: justify;
+    text-justify: inter-word;
+}
 </style>
 <div class="container">
     <div class="my-grid d-flex flex-row justify-content-center">
-      <a style="text-decoration:none; color:black" href="{% url 'account:edit-profile' user.id %}">
-                                <button type="button" class="btn btn-dark">edit</button>
-                            </a>
+        <a style="text-decoration:none; color:black" href="{% url 'account:edit-profile' user.id %}">
+            <button type="button" class="btn btn-dark">edit</button>
+        </a>
         <div class="my-grid d-flex flex-column justify-content-center col-3">
             <div class="image-container mx-auto mb-4">
                 <img class="d-block border border-dark rounded-circle img-fluid mx-auto profile-image p-container" alt="default_pfp" id="id_profile_image" src="{% static 'images/default_pfp.png' %}">
@@ -91,7 +96,7 @@ p.c {
         <div class="my-grid d-flex flex-column justify-content-center col-5">
             <div class="my-grid d-flex flex-row justify-content-start ">
                 <div class="d-flex flex-row align-items-center center1">
-                    <p><b>{{user.username}}</b></p>
+                    <p><b>{{account.username}}</b></p>
                 </div>
                 {% if request.user.is_authenticated %}
                 <div class="d-flex flex-row align-items-center btn btn-light m-2 px-4" onclick="createOrReturnPrivateChat('{{id}}')">
@@ -116,117 +121,201 @@ p.c {
                 </div>
                 {% endif %}
             </div>
-            <div class="my-grid d-flex flex-row justify-content-between">
-                <p><b> {{posts|length}} </b>posts</p>
-                <p><b>10 </b>Followers</p>
-                <p><b>22 </b>Following</p>
-                <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</p>
+            <div class="my-grid d-flex flex-row">
+                <div class="my-grid d-flex flex-column col-10">
+                    <div class="my-grid d-flex flex-row justify-content-between">
+                        <p><b> {{posts|length}} </b>posts</p>
+                        <p><b>10 </b>Followers</p>
+                        <p><b>22 </b>Following</p>
+                        <p>&nbsp&nbsp&nbsp</p>
+                    </div>
+                </div>
             </div>
             <div class="my-grid d-flex flex-row align-items-center ">
-                {{user.email}}
+                {% if is_self %}
+                {{account.email}}
+                {% else %}
+                {% if hide_email %}
+                **********
+                {% else %}
+                {{account.email}}
+                {% endif %}
+                {% endif %}
             </div>
         </div>
     </div>
-    <hr style="color:#8B8585">
-    <div class="my-grid d-flex flex-row justify-content-center">
-        <div class="my-grid d-flex flex-column col-5 mt-4">
-
-            
-        </div>
-        <div class="my-grid d-flex flex-column col-5 mt-4">
-            {% for post in posts %}
-            <p class="my-grid-item m-auto">
-                <div class="my-grid my-gridbc d-flex flex-column">
-                    <!-- post header -->
-                    <div class="my-grid d-flex flex-row justify-content-between align-items-center">
-                        <div class="d-flex justify-content-start">
-                            <a style=" text-decoration:none; color:black;" class="d-flex flex-row" href="{% url 'account:view' user_id=post.author.id %}">
-                                <div class="my-grid-item d-flex align-items-center m-auto">
-                                    <img class="img-fluid mx-auto d-block" src="{{post.author.profile_image.url}}" alt="" width="40">
-                                </div>
-                                <p class="my-grid-item d-flex center2"><b>&nbsp{{post.author.username}}</b></p>
-                            </a>
-                        </div>
-                        <div class="btn-group dropleft">
-                            <a href="#" style=" text-decoration:none; color:black;" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="material-icons-outlined">
-                                    more_horiz
-                                </span>
-                                <div class="dropdown-menu">
-                                    <a style=" text-decoration:none; color:black;" class="dropdown-item" href="{% url 'personal:postdetail' post.pk %}">
-                                        Go to post
+    <!-- <hr style="color:#8B8585"> -->
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Posts</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile Info</button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="my-grid d-flex flex-row justify-content-center">
+                <div class="my-grid d-flex flex-column col-5 mt-4">
+                    {% for post in posts %}
+                    <p class="my-grid-item m-auto">
+                        <div class="my-grid my-gridbc d-flex flex-column">
+                            <!-- post header -->
+                            <div class="my-grid d-flex flex-row justify-content-between align-items-center">
+                                <div class="d-flex justify-content-start">
+                                    <a style=" text-decoration:none; color:black;" class="d-flex flex-row" href="{% url 'account:view' user_id=post.author.id %}">
+                                        <div class="my-grid-item d-flex align-items-center m-auto">
+                                            <img class="img-fluid mx-auto d-block" src="{{post.author.profile_image.url}}" alt="" width="40">
+                                        </div>
+                                        <p class="my-grid-item d-flex center2"><b>&nbsp{{post.author.username}}</b></p>
                                     </a>
-                                    <a style=" text-decoration:none; color:black;" class="dropdown-item" href="{% url 'personal:edit-post' post.pk %}">
-                                        Edit
+                                </div> 
+                                {% if is_self %}
+                                <div class="btn-group dropleft">
+                                    <a href="#" style=" text-decoration:none; color:black;" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="material-icons-outlined">
+                                            more_horiz
+                                        </span>
+                                        <div class="dropdown-menu">
+                                            <a style=" text-decoration:none; color:black;" class="dropdown-item" href="{% url 'personal:edit-post' post.pk %}">
+                                                Edit
+                                            </a>
+                                            <a style=" text-decoration:none; color:red;" class="dropdown-item" href="{% url 'personal:delete-post' post.pk %}?next={{ request.path|urlencode }}">
+                                                Delete
+                                            </a>
+                                        </div>
                                     </a>
-                                    <a style=" text-decoration:none; color:red;" class="dropdown-item" href="{% url 'personal:delete-post' post.pk %}?next={{ request.path|urlencode }}">
-                                        Delete
-                                    </a>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    {% if post.post_image %}
-                    <hr style="height:1px;border-width:0;background-color:gray; margin:2px;">
-                    <div class="my-grid d-flex flex-row justify-content-between">
-                        <!-- post picture -->
-                        <div class="my-grid-item m-auto">
-                            <img class="img-fluid mx-auto d-block" src="{{post.post_image.url}}" alt="" width="700">
-                        </div>
-                    </div>
-                    <hr style="height:1px;border-width:0;background-color:gray; margin: 2px; ">
-                    {% endif %}
-                    <!-- post text -->
-                    <div class="my-grid d-flex flex-row justify-content-start">
-                        <p class="my-grid-item c" style="margin-left:10px; margin-bottom: 0; margin-right:8px;"><b>{{post.author.username}}&nbsp</b>{{post.text}}</p>
-                    </div>
-                    <!-- like & comment icons -->
-                    <div class="my-grid d-flex flex-row justify-content-start">
-                        <div class="my-grid d-flex flex-row" style=" column-gap: 0; margin-bottom: 0; align-items: center;">
-                            <form action="{% url 'personal:like-post-view' %}" method="POST" class="like-form" id="{{post.id}}">
-                                {% csrf_token %}
-                                <button class="like-btn{{post.id}}" type="submit" name="post_id" value="{{post.id}}" style=" font-weight:bold; border-color: transparent; color: #B80C04; margin-bottom: 0; background-color: transparent; border-radius:50%">
-                                    {% if request.user not in post.liked.all %}
-                                    <span class="material-icons-outlined md-36">
-                                        favorite_border
-                                    </span>
-                                    {% else %}
-                                    <span class="material-icons-outlined md-36">
-                                        favorite
-                                    </span>
-                                    {% endif %}
-                                </button>
-                            </form>
-                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample{{post.id}}" aria-expanded="false" aria-controls="collapseExample{{post.id}}" style=" font-weight:bold; border-color: transparent; margin-bottom: 0; color: black; background-color: transparent;    box-shadow: none; ">
-                                <i class="fas fa-comments fa-2x"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="my-grid d-flex flex-row justify-content-between">
-                        <p class="my-grid-item like-count{{post.id}}" style="margin-left:10px; margin-bottom: 5px; margin-top: 0;"> <b> {{post.num_likes}} likes</b></p>
-                    </div>
-                    <!-- post comments -->
-                    <div class="collapse" id="collapseExample{{post.id}}">
-                        <div class="card card-body">
-                            {% if not post.comments.all %}
-                            No comments yet.
-                            {% else %}
-                            {% for comment in post.comments.all %}
-                            <div class="my-grid d-flex flex-column">
-                                <div><a style=" text-decoration:none; color:black;" href="{% url 'account:view' user_id=comment.author.id %}"><b>{{comment.author}}:</b></a> {{comment.body}}
+                                </div> 
+                                {% endif %}
+                            </div>
+                            {% if post.post_image %}
+                            <hr style="height:1px;border-width:0;background-color:gray; margin:2px;">
+                            <div class="my-grid d-flex flex-row justify-content-between">
+                                <!-- post picture -->
+                                <div class="my-grid-item m-auto">
+                                    <img class="img-fluid mx-auto d-block" src="{{post.post_image.url}}" alt="" width="700">
                                 </div>
                             </div>
-                            {% endfor %}
+                            <hr style="height:1px;border-width:0;background-color:gray; margin: 2px; ">
                             {% endif %}
+                            <!-- post text -->
+                            <div class="my-grid d-flex flex-row justify-content-start">
+                                <p class="my-grid-item c" style="margin-left:10px; margin-bottom: 0; margin-right:8px;"><b>{{post.author.username}}&nbsp</b>{{post.text}}</p>
+                            </div>
+                            <!-- like & comment icons -->
+                            <div class="my-grid d-flex flex-row justify-content-start">
+                                <div class="my-grid d-flex flex-row" style=" column-gap: 0; margin-bottom: 0; align-items: center;">
+                                    <form action="{% url 'personal:like-post-view' %}" method="POST" class="like-form" id="{{post.id}}">
+                                        {% csrf_token %}
+                                        <button class="like-btn{{post.id}}" type="submit" name="post_id" value="{{post.id}}" style=" font-weight:bold; border-color: transparent; color: #B80C04; margin-bottom: 0; background-color: transparent; border-radius:50%">
+                                            {% if request.user not in post.liked.all %}
+                                            <span class="material-icons-outlined md-36">
+                                                favorite_border
+                                            </span>
+                                            {% else %}
+                                            <span class="material-icons-outlined md-36">
+                                                favorite
+                                            </span>
+                                            {% endif %}
+                                        </button>
+                                    </form>
+                                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample{{post.id}}" aria-expanded="false" aria-controls="collapseExample{{post.id}}" style=" font-weight:bold; border-color: transparent; margin-bottom: 0; color: black; background-color: transparent;    box-shadow: none; ">
+                                        <i class="fas fa-comments fa-2x"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="my-grid d-flex flex-row justify-content-between">
+                                <p class="my-grid-item like-count{{post.id}}" style="margin-left:10px; margin-bottom: 5px; margin-top: 0;"> <b> {{post.num_likes}} likes</b></p>
+                            </div>
+                            <!-- post comments -->
+                            <div class="collapse" id="collapseExample{{post.id}}">
+                                <div class="comment-wrapper{{post.id}}">
+                                    <div class="my-grid-item d-flex flex-column ss">
+                                        {% for comment in post.comments.all %}
+                                        <div class="my-grid d-flex flex-column" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right: 8px;">
+                                            <div><a style=" text-decoration:none; color:black;" href="{% url 'account:view' user_id=comment.author.id %}"><b>{{comment.author}}:</b></a>
+                                                <div style=" text-align: justify; text-justify: inter-word;  word-break: break-all;">{{comment.body}}</div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <p class="my-grid d-flex flex-row justify-content-start align-items-end " style=" column-gap: 0; margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right: 8px;">
+                                    <textarea rows="1" ; class="form-control comment-text{{post.id}}" style="font-size: 14px; " placeholder="Add a comment..."></textarea>
+                                    <button type="button" data-post="{{post.id}}" style="display: inline-block; height: 35px;" class="btn btn-dark btn-sm abc save-comment{{post.id}}">Comment</button>
+                                </p>
+                            </div>
+                            <!-- post time -->
+                            <div class="my-grid d-flex flex-row justify-content-between">
+                                <p class="my-grid-item" style="color:#6E6A6A; margin-left:10px ; font-weight: 100;"><small>{{post.date_added}}</small></p>
+                            </div>
                         </div>
-                    </div>
-                    <!-- post time -->
-                    <div class="my-grid d-flex flex-row justify-content-between">
-                        <p class="my-grid-item" style="color:#6E6A6A; margin-left:10px ; font-weight: 100;"><small>{{post.date_added}}</small></p>
-                    </div>
+                    </p>
+                    {% endfor %}
                 </div>
-            </p>
-            {% endfor %}
+            </div>
+        </div>
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="my-grid d-flex flex-row justify-content-center">
+                <div class="my-grid d-flex flex-column col-5 mt-4">
+                    <div class="my-grid d-flex flex-row justify-content-start ">
+                        <h6>About:</h6>
+                    </div>
+                    <div class="my-grid d-flex flex-row justify-content-start ">
+                        {{info.about}}
+                    </div>
+                    <br>
+                    <div class="my-grid d-flex flex-row justify-content-start ">
+                        <h6>Tech stack:</h6>
+                    </div>
+                    <div class="my-grid d-flex flex-row justify-content-start ">
+                        {{info.tech_stack}}
+                    </div>
+                    <br>
+                    <div class="my-grid d-flex flex-row justify-content-start ">
+                        <h6>Learning:</h6>
+                    </div>
+                    <div class="my-grid d-flex flex-row justify-content-start ">
+                        {{info.learning}}
+                    </div>
+                    <br>
+                    <div class="my-grid d-flex flex-row justify-content-start ">
+                        <h6>Hobbies & Interests:</h6>
+                    </div>
+                    <div class="my-grid d-flex flex-row justify-content-start ">
+                        {{info.hobbies}}
+                    </div>
+                    <br>
+                    <div class="my-grid d-flex flex-row justify-content-start ">
+                        <h6>Favorite Music:</h6>
+                    </div>
+                    <div class="my-grid d-flex flex-row justify-content-start ">
+                        {{info.music}}
+                    </div>
+                    <br>
+                    <div class="my-grid d-flex flex-row justify-content-start ">
+                        <h6>Favorite TV Shows:</h6>
+                    </div>
+                    <div class="my-grid d-flex flex-row justify-content-start ">
+                        {{info.tvshows}}
+                    </div>
+                    <br>
+                    <div class="my-grid d-flex flex-row justify-content-start ">
+                        <h6>Favorite Movies:</h6>
+                    </div>
+                    <div class="my-grid d-flex flex-row justify-content-start ">
+                        {{info.movies}}
+                    </div>
+                    <br>
+                    <div class="my-grid d-flex flex-row justify-content-start ">
+                        <h6>Favorite Books:</h6>
+                    </div>
+                    <div class="my-grid d-flex flex-row justify-content-start ">
+                        {{info.books}}
+                    </div>
+                    <br> <br>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -275,11 +364,40 @@ $(document).ready(function() {
             },
         })
 
-
-
     });
 
 
+    $(".abc").on('click', function() {
+        var _postid = $(this).data('post');
+        var _comment = $(`.comment-text${_postid}`).val();
+
+        $.ajax({
+            url: "{% url 'personal:save-comment' %}",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                comment: _comment,
+                post: _postid,
+            },
+            dataType: 'json',
+
+            beforeSend: function() {
+                $(`.save-comment${_postid}`).addClass('disabled').text('Saving...');
+            },
+
+            success: function(res) {
+                if (res.bool == true) {
+                    $(`.comment-text${_postid}`).val('');
+                    var _html = '<div class="my-grid d-flex flex-column" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right:8px;">\                                    <div><a style=" text-decoration:none; color:black;" href="#"><b>{{request.user}}: </b></a>  <div style=" text-align: justify; text-justify: inter-word;  word-break: break-all;">'+ _comment+'</div>\
+                                    </div>\
+                                </div>';
+
+                    $(`.comment-wrapper${_postid}`).append(_html);
+                }
+                $(`.save-comment${_postid}`).removeClass('disabled').text('Comment');
+            },
+        });
+    });
 });
 </script>
 {% include 'directmessage/snippets/create_or_return_private_chat.html' %}

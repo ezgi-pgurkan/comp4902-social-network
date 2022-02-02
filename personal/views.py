@@ -17,14 +17,6 @@ def home_screen_view(request, *args, **kwargs):
     return render(request, "personal/home.html", context)
 
 
-def postDetailView(request, pk):
-    post=Post.objects.get(pk=pk)
-    comments=Comment.objects.all()
-    user=request.user
-    account=Account.objects.get(username=user)
-    context ={'post': post, 'comments': comments, 'account':account}
-    return render(request, "personal/post_details.html", context)
-
 def addPostView(request):
     user=request.user
     form=PostForm()

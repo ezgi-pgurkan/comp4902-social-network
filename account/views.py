@@ -186,6 +186,7 @@ def profile_view(request, *args, **kwargs):
     try:
         account = Account.objects.get(pk=user_id)
         posts=Post.objects.filter(author=user_id)
+        info=Profile.objects.get(pk=user_id)
     except:
         return HttpResponse("Something went wrong.")
     if account:
@@ -207,6 +208,8 @@ def profile_view(request, *args, **kwargs):
         context['is_self'] = is_self
         context['BASE_URL'] = settings.BASE_URL
         context['posts'] = posts
+        context['account'] = account
+        context['info'] = info
     return render(request, "account/profile_page.html", context)
 
 def editProfileView(request, *args, **kwargs):

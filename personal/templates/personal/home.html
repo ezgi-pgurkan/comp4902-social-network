@@ -82,7 +82,7 @@ p.c {
                             <p class="my-grid-item align-items-center m-auto">
                                 <a style=" text-decoration:none; color:black;" class="d-flex flex-row" href="{% url 'account:view' user_id=request.user.id %}">
                                     <div class="my-grid-item m-auto">
-                                        <img class="rounded-circle img-fluid mx-auto d-block"  id="id_profile_links" src="{{user.profile_image.url}}" alt="default_pfp" width="75" height="45">
+                                        <img class="rounded-circle img-fluid mx-auto d-block" id="id_profile_links" src="{{user.profile_image.url}}" alt="default_pfp" width="75" height="45">
                                     </div>
                                     <p class="my-grid-item d-flex align-items-center center2"><b>&nbsp{{user.username}}</b></p>
                                 </a>
@@ -113,15 +113,13 @@ p.c {
                                 <p class="my-grid-item d-flex center2"><b>&nbsp{{post.author.username}}</b></p>
                             </a>
                         </div>
+                        {% if user|stringformat:'s' == post.author|stringformat:'s' %}
                         <div class="btn-group dropleft">
                             <a href="#" style=" text-decoration:none; color:black;" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="material-icons-outlined">
                                     more_horiz
                                 </span>
                                 <div class="dropdown-menu">
-                                    <a style=" text-decoration:none; color:black;" class="dropdown-item" href="{% url 'personal:postdetail' post.pk %}">
-                                        Go to post
-                                    </a>
                                     <a style=" text-decoration:none; color:black;" class="dropdown-item" href="{% url 'personal:edit-post' post.pk %}">
                                         Edit
                                     </a>
@@ -131,6 +129,7 @@ p.c {
                                 </div>
                             </a>
                         </div>
+                          {% endif %}
                     </div>
                     {% if post.post_image %}
                     <hr style="height:1px;border-width:0;background-color:gray; margin:2px;">
@@ -173,18 +172,21 @@ p.c {
                     </div>
                     <!-- post comments -->
                     <div class="collapse" id="collapseExample{{post.id}}">
-                        <div class="card card-body">
-                            {% if not post.comments.all %}
-                            No comments yet.
-                            {% else %}
-                            {% for comment in post.comments.all %}
-                            <div class="my-grid d-flex flex-column">
-                                <div><a style=" text-decoration:none; color:black;" href="{% url 'account:view' user_id=comment.author.id %}"><b>{{comment.author}}:</b></a> {{comment.body}}
+                        <div class="comment-wrapper{{post.id}}">
+                            <div class="my-grid-item d-flex flex-column ss">
+                                {% for comment in post.comments.all %}
+                                <div class="my-grid d-flex flex-column" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right: 8px;">
+                                    <div><a style=" text-decoration:none; color:black;" href="{% url 'account:view' user_id=comment.author.id %}"><b>{{comment.author}}:</b></a>
+                                        <div style=" text-align: justify; text-justify: inter-word;  word-break: break-all;">{{comment.body}}</div>
+                                    </div>
                                 </div>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
-                            {% endif %}
                         </div>
+                        <p class="my-grid d-flex flex-row justify-content-start align-items-end " style=" column-gap: 0; margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right: 8px;">
+                            <textarea rows="1" ; class="form-control comment-text{{post.id}}" style="font-size: 14px; " placeholder="Add a comment..."></textarea>
+                            <button type="button" data-post="{{post.id}}" style="display: inline-block; height: 35px;" class="btn btn-dark btn-sm abc save-comment{{post.id}}">Comment</button>
+                        </p>
                     </div>
                     <!-- post time -->
                     <div class="my-grid d-flex flex-row justify-content-between">
@@ -212,8 +214,7 @@ p.c {
     </div>
 </div>
 <script type="text/javascript">
-
-    preloadImage("{{profile_image|safe}}", "id_profile_image")
+preloadImage("{{profile_image|safe}}", "id_profile_image");
 
 
 $(document).ready(function() {
@@ -257,11 +258,39 @@ $(document).ready(function() {
             },
         })
 
-
-
     });
 
+    $(".abc").on('click', function() {
+        var _postid = $(this).data('post');
+        var _comment = $(`.comment-text${_postid}`).val();
 
+        $.ajax({
+            url: "{% url 'personal:save-comment' %}",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                comment: _comment,
+                post: _postid,
+            },
+            dataType: 'json',
+
+            beforeSend: function() {
+                $(`.save-comment${_postid}`).addClass('disabled').text('Saving...');
+            },
+
+            success: function(res) {
+                if (res.bool == true) {
+                    $(`.comment-text${_postid}`).val('');
+                    var _html = '<div class="my-grid d-flex flex-column" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right:8px;">\                                    <div><a style=" text-decoration:none; color:black;" href="#"><b>{{request.user}}: </b></a>  <div style=" text-align: justify; text-justify: inter-word;  word-break: break-all;">' + _comment + '</div>\
+                                    </div>\
+                                </div>';
+
+                    $(`.comment-wrapper${_postid}`).append(_html);
+                }
+                $(`.save-comment${_postid}`).removeClass('disabled').text('Comment');
+            },
+        });
+    });
 });
 </script>
 {% endblock content %}

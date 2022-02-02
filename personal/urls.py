@@ -7,7 +7,6 @@ from personal import views
 app_name = 'personal'
 
 urlpatterns = [
-    path('post/<int:pk>', views.postDetailView, name='postdetail'),
     path('add_post/', views.addPostView, name='add-post'),
     path('delete_post/<str:pk>', views.deletePostView, name='delete-post'),
     path('edit_post/<str:pk>', views.editPostView, name='edit-post'),
