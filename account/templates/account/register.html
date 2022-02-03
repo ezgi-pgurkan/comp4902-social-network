@@ -9,6 +9,16 @@
     margin: auto;
 }
 
+.card-signin2 {
+    width: 100%;
+    max-width: 450px;
+}
+
+body {
+    background-color: white;
+}
+
+
 .form-signin input[type="email"] {
     margin-bottom: 10px;
     border-bottom-right-radius: 0;
@@ -26,35 +36,51 @@
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
+
+.btn {
+    border-radius: 30px;
+}
 </style>
 <div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="card card-signin">
-            <div class="card-body">
-                <form class="form-signin" method="post">{% csrf_token %}
-                    <div class="d-flex flex-column pb-3">
-                      <!-- <img class="img-fluid mx-auto d-block" src="{% static 'codingwithmitch/logo_250_250_transparent.png' %}" alt="codingwithmitch logo" width="72" height="72"> -->  
+    <div class="my-grid d-flex flex-row justify-content-between">
+        <div class="my-grid-item m-auto">
+            <img class="img-fluid mx-auto d-block" src="{% static 'images/register.jpg' %}" alt="devzone logo" width="900">
+        </div>
+        <div class="my-grid-item m-auto">
+            <div class="card card-signin border-0">
+                <div class="card-body">
+                    <div class="my-grid d-flex flex-row align-items-center">
+                        <p style="color:#671570; font-size:48px;">Create a new account</p>
                     </div>
-                    <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-                    <input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username" required>
-                    <input type="password" name="password1" id="inputPassword1" class="form-control" placeholder="Password" required>
-                   
-                    <input type="password" name="password2" id="inputPassword2" class="form-control" placeholder="Confirm password" required>
-               
-                    {% for field in registration_form %}
-                    <p>
-                        {% for error in field.errors %}
-                        <p style="color: red">{{ error }}</p>
-                        {% endfor %}
-                    </p>
-                    {% endfor %}
-                    {% if registration_form.non_field_errors %}
-                    <div style="color: red">
-                        <p>{{registration_form.non_field_errors}}</p>
+                    <div class="card card-signin2 border-0">
+                        <form class="form-signin" method="post">
+                            {% csrf_token %}
+                            <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+                            <input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username" required>
+                            <input type="password" name="password1" id="inputPassword1" class="form-control" placeholder="Password" required>
+                            <input type="password" name="password2" id="inputPassword2" class="form-control" placeholder="Confirm password" required>
+                            {% for field in registration_form %}
+                            <p>
+                                {% for error in field.errors %}
+                                <p style="color: red">{{ error }}</p>
+                                {% endfor %}
+                            </p>
+                            {% endfor %}
+                            {% if registration_form.non_field_errors %}
+                            <div style="color: red">
+                                <p>{{registration_form.non_field_errors}}</p>
+                            </div>
+                            {% endif %}
+                            <div class="text-center">
+                                <button class="btn btn-lg btn-primary  w-100 btn-block" type="submit">Sign up</button>
+                            </div>
+                        </form>
+                        <br>
+                        <div class="my-grid-item m-auto align-items-center">
+                            <p>Have an account? <a class="m-auto" style="text-decoration:none;" href="{% url 'login' %}">Sign in</a></p>
+                        </div>
                     </div>
-                    {% endif %}
-                    <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
-                </form>
+                </div>
             </div>
         </div>
     </div>
