@@ -170,13 +170,14 @@ p.c {
                     <div class="my-grid d-flex flex-row justify-content-between">
                         <p class="my-grid-item like-count{{post.id}}" style="margin-left:10px; margin-bottom: 5px; margin-top: 0;"> <b> {{post.num_likes}} likes</b></p>
                     </div>
-                    <!-- post comments -->
+                    <!-- post comments --> 
                     <div class="collapse" id="collapseExample{{post.id}}">
                         <div class="comment-wrapper{{post.id}}">
                             <div class="my-grid-item d-flex flex-column ss">
                                 {% for comment in post.comments.all %}
                                 <div class="my-grid d-flex flex-column" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right: 8px;">
-                                    <div><a style=" text-decoration:none; color:black;" href="{% url 'account:view' user_id=comment.author.id %}"><b>{{comment.author}}:</b></a>
+
+                                    <div class="my-grid d-flex flex-row" ><a style=" text-decoration:none; color:black;" href="{% url 'account:view' user_id=comment.author.id %}"><b>{{comment.author}}:</b></a>
                                         <div style=" text-align: justify; text-justify: inter-word;  word-break: break-all;">{{comment.body}}</div>
                                     </div>
                                 </div>
@@ -281,7 +282,7 @@ $(document).ready(function() {
             success: function(res) {
                 if (res.bool == true) {
                     $(`.comment-text${_postid}`).val('');
-                    var _html = '<div class="my-grid d-flex flex-column" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right:8px;">\                                    <div><a style=" text-decoration:none; color:black;" href="#"><b>{{request.user}}: </b></a>  <div style=" text-align: justify; text-justify: inter-word;  word-break: break-all;">' + _comment + '</div>\
+                    var _html = '<div class="my-grid d-flex flex-column" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right:8px;">\                                    <div class="my-grid d-flex flex-row" ><a style=" text-decoration:none; color:black;" href="#"><b>{{request.user}}: </b></a>  <div style=" text-align: justify; text-justify: inter-word;  word-break: break-all;">' + _comment + '</div>\
                                     </div>\
                                 </div>';
 

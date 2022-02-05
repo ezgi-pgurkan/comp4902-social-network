@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 from itertools import chain
 import json
+import datetime
+from datetime import datetime as dt
+import pytz
 from django.http import HttpResponse
 
 from directmessage.models import DirectMessageRoom, Message
@@ -27,21 +30,47 @@ def direct_message_room_view(request, *args, **kwargs):
 			pass
 
 	# Finds all the rooms the user is a part of
+	# we dont know if user is user1 or user2
 	rooms1=DirectMessageRoom.objects.filter(user1=user, is_active=True)
 	rooms2=DirectMessageRoom.objects.filter(user2=user, is_active=True)
 
 	# Merge the lists, will remove duplicate entries
+	# chain -> merge 
 	rooms= list(chain(rooms1, rooms2))
 
 	# messages and recipients m_and_r
+	# [{"message": "hey", "recipient": "Jake"}, {"message": "hello", "recipient": "Blake"},]
 	m_and_r = []
 	for room in rooms:
+		# find who is the recipient
 		if room.user1 == user:
 			recipient = room.user2
 		else:
 			recipient = room.user1
+
+		# find the last message the recipient sent
+		try:
+			message = Message.objects.filter(room=room, user=recipient).latest("timestamp")
+		except Message.DoesNotExist:
+			# create a dummy message with dummy timestamp
+			today = dt(
+				year=1950, 
+				month=1, 
+				day=1, 
+				hour=1,
+				minute=1,
+				second=1,
+				tzinfo=pytz.UTC
+			)
+			message = Message(
+				user=recipient,
+				room=room,
+				timestamp=today,
+				content="",
+			)
+
 		m_and_r.append({
-			"message": "",
+			"message": message,
 			"recipient": recipient
 			})
 

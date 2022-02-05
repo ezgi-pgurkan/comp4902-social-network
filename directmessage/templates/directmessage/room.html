@@ -121,34 +121,34 @@
     overflow-y: scroll;
 }
 </style>
-
-
 <div class="container">
     <div class="row">
+        <!-- LEFT SIDE OF THE PAGE - CHATLOG -->
         <div class="col-sm-9 m-0 p-2">
             <div class="card" id="id_chatroom_card">
+                <!-- card header -->
                 <div class="d-flex flex-row align-items-center card-header" id="id_room_title">
-                <a style=" text-decoration:none; color:black;" class="d-flex flex-row" target="_blank" id="id_user_info_container">
-                    <img class="profile-image rounded-circle img-fluid" id="id_other_user_profile_image" src="{% static 'images/default_pfp.png' %}">
-                    <h3>&nbsp</h3>
-                    <h3 class="ml-2" id="id_other_username"></h3>
-                </a>
-                
+                    <a style=" text-decoration:none; color:black;" class="d-flex flex-row" target="_blank" id="id_user_info_container">
+                        <img class="profile-image rounded-circle img-fluid" id="id_other_user_profile_image" src="{% static 'images/default_pfp.png' %}">
+                        <h3>&nbsp</h3>
+                        <h3 class="ml-2" id="id_other_username"></h3>
+                    </a>
                 </div>
+                <!-- card body -->
                 <div class="card-body p-1">
                     <div class="d-flex flex-column" id="id_chat_log_container">
-                    
+                        <!-- loading spinner -->
                         <div class="d-flex flex-row justify-content-center" id="id_chatroom_loading_spinner_container">
-                            <div class="spinner-border text-primary"  id="id_chatroom_loading_spinner" role="status"  style="display: none; ">
+                            <div class="spinner-border text-primary" id="id_chatroom_loading_spinner" role="status" style="display: none; ">
                                 <span class="sr-only"></span>
                             </div>
-                        </div> 
-                
+                        </div>
+                        <!-- chat log -->
                         <div class="d-flex chat-log" id="id_chat_log">
-  
-                        </div>       
+                        </div>
+                        <!-- page number hidden -->
                         <span class="{% if not debug %}d-none{% endif %} page-number" id="id_page_number">1</span>
-                        
+                        <!-- chat message input box -->
                         <div class="d-flex flex-row chat-message-input-container">
                             <textarea class="flex-grow-1 chat-message-input" id="id_chat_message_input"></textarea>
                             <button class="btn btn-primary chat-message-submit-button" id="id_chat_message_submit">
@@ -159,17 +159,17 @@
                 </div>
             </div>
         </div>
-
+        <!-- RIGHT SIDE OF THE PAGE - CHATROOMS -->
         <div class="col-sm-3 m-0 p-2">
             <div class="card">
                 <div class="d-flex flex-row align-items-center card-header">
-                    <h3 >Chats</h3>
+                    <h3>Chats</h3>
                 </div>
-                <div class="card-body p-1"> 
+                <div class="card-body p-1">
                     <div class="d-flex flex-column friends-list-container ">
                         {% for x in m_and_r %}
                         <div class="d-flex flex-row p-2 friend-container flex-grow-1" onclick="onSelectRecipient('{{x.recipient.id}}')" id="id_friend_container_{{x.recipient.id}}">
-                            <img class="profile-image rounded-circle img-fluid" id="id_friend_img_{{x.recipient.id}}" src="{% static 'images/default_pfp.png' %}" >
+                            <img class="profile-image rounded-circle img-fluid" id="id_friend_img_{{x.recipient.id}}" src="{% static 'images/default_pfp.png' %}">
                             <div class="d-flex flex-column">
                                 <span class="username-span">{{x.recipient.username}}</span>
                                 <span class="friend-message-span">{{x.message|truncatechars:20}}</span>
@@ -180,7 +180,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 <!-- Client Error MODAL -->

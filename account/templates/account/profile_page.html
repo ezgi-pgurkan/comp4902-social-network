@@ -169,7 +169,7 @@ div {
                                         </div>
                                         <p class="my-grid-item d-flex center2"><b>&nbsp{{post.author.username}}</b></p>
                                     </a>
-                                </div> 
+                                </div>
                                 {% if is_self %}
                                 <div class="btn-group dropleft">
                                     <a href="#" style=" text-decoration:none; color:black;" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -185,7 +185,7 @@ div {
                                             </a>
                                         </div>
                                     </a>
-                                </div> 
+                                </div>
                                 {% endif %}
                             </div>
                             {% if post.post_image %}
@@ -233,7 +233,7 @@ div {
                                     <div class="my-grid-item d-flex flex-column ss">
                                         {% for comment in post.comments.all %}
                                         <div class="my-grid d-flex flex-column" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right: 8px;">
-                                            <div><a style=" text-decoration:none; color:black;" href="{% url 'account:view' user_id=comment.author.id %}"><b>{{comment.author}}:</b></a>
+                                            <div class="my-grid d-flex flex-row"><a style=" text-decoration:none; color:black;" href="{% url 'account:view' user_id=comment.author.id %}"><b>{{comment.author}}:</b></a>
                                                 <div style=" text-align: justify; text-justify: inter-word;  word-break: break-all;">{{comment.body}}</div>
                                             </div>
                                         </div>
@@ -388,7 +388,7 @@ $(document).ready(function() {
             success: function(res) {
                 if (res.bool == true) {
                     $(`.comment-text${_postid}`).val('');
-                    var _html = '<div class="my-grid d-flex flex-column" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right:8px;">\                                    <div><a style=" text-decoration:none; color:black;" href="#"><b>{{request.user}}: </b></a>  <div style=" text-align: justify; text-justify: inter-word;  word-break: break-all;">'+ _comment+'</div>\
+                    var _html = '<div class="my-grid d-flex flex-column" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right:8px;">\                                    <div class="my-grid d-flex flex-row" ><a style=" text-decoration:none; color:black;" href="#"><b>{{request.user}}: </b></a>  <div style=" text-align: justify; text-justify: inter-word;  word-break: break-all;">' + _comment + '</div>\
                                     </div>\
                                 </div>';
 
