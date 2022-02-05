@@ -52,7 +52,7 @@ def direct_message_room_view(request, *args, **kwargs):
 		try:
 			message = Message.objects.filter(room=room, user=recipient).latest("timestamp")
 		except Message.DoesNotExist:
-			# create a dummy message with dummy timestamp
+			# create a dummy message with dummy timestamp if the message does not exist
 			today = dt(
 				year=1950, 
 				month=1, 
