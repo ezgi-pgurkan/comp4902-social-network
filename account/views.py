@@ -122,9 +122,9 @@ def account_search_view(request, *args, **kwargs):
             # icontains -> Case-insensitive
             search_results = Account.objects.filter(Q(email__icontains=search_query)&Q(hide_email=False)|Q(username__icontains=search_query)).distinct()
             user = request.user
-            accounts = [] # [(account1, True), (account2, False), ...]
+            accounts = [] # [(account1), (account2), ...]
             for account in search_results:
-                accounts.append((account, False))
+                accounts.append((account))
             context['accounts'] = accounts
                 
     return render(request, "account/search_results.html", context)

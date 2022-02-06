@@ -70,51 +70,56 @@ p.c {
     display: flex;
     position: fixed;
 }
+
 </style>
 <div class="container">
     <div class="my-grid d-flex flex-row justify-content-between">
         <!-- profile info -->
-        <div class="my-grid d-flex flex-column col-3">
+        <div class="my-grid d-flex flex-column col-2">
             <div class="my-grid d-flex flex-row justify-content-center">
                 <div class="sidebar">
                     <div class="d-flex flex-column">
                         <div class="d-flex flex-row">
                             <p class="my-grid-item align-items-center m-auto">
-                                <a style=" text-decoration:none; color:black;" class="d-flex flex-row" href="{% url 'account:view' user_id=request.user.id %}">
+                               
                                     <div class="my-grid-item m-auto">
                                         <img class="rounded-circle img-fluid mx-auto d-block" id="id_profile_links" src="{{user.profile_image.url}}" alt="default_pfp" width="75" height="45">
                                     </div>
                                     <p class="my-grid-item d-flex align-items-center center2"><b>&nbsp{{user.username}}</b></p>
-                                </a>
-                            </p>
+                                                            </p>
                         </div>
                         <br>
-                        <div class="d-flex flex-row">
-                            <p class="my-grid-item align-items-center m-auto ">
-                                INFO
+                        <div class="d-flex flex-column">
+                            <p class="my-grid-item align-items-center m-auto">
+                                <a style="text-decoration:none; color:black" href="{% url 'account:profile-page' user_id=request.user.id %}"><button type="button" class="btn btn-sm btn-light">Visit my profile</button></a>
                             </p>
+                         <br style="line-height: 1px;"> 
+                            <p class="my-grid-item align-items-center m-auto">
+                                <a style="text-decoration:none; color:black" href="{% url 'account:view' user_id=request.user.id %}"><button type="button" class="btn btn-sm btn-light">Visit account settings</button></a>
+                            </p>
+                            <br>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- POSTS -->
-        <div class="my-grid d-flex flex-column col-5 mt-4">
+        <div class="my-grid d-flex flex-column col-6 mt-4">
             {% for post in posts %}
             <p class="my-grid-item m-auto">
                 <div class="my-grid my-gridbc d-flex flex-column">
                     <!-- post header -->
                     <div class="my-grid d-flex flex-row justify-content-between align-items-center">
-                        <div class="d-flex justify-content-start">
-                            <a style=" text-decoration:none; color:black;" class="d-flex flex-row" href="{% url 'account:view' user_id=post.author.id %}">
+                        <div class="d-flex justify-content-start" style="margin-left:10px;">
+                            <a style=" text-decoration:none; color:black;" class="d-flex flex-row" href="{% url 'account:profile-page' user_id=post.author.id %}">
                                 <div class="my-grid-item d-flex align-items-center m-auto">
-                                    <img class="img-fluid mx-auto d-block" src="{{post.author.profile_image.url}}" alt="" width="40">
+                                    <img class="img-fluid mx-auto d-block rounded-circle" src="{{post.author.profile_image.url}}" alt="" width="40">
                                 </div>
                                 <p class="my-grid-item d-flex center2"><b>&nbsp{{post.author.username}}</b></p>
                             </a>
                         </div>
                         {% if user|stringformat:'s' == post.author|stringformat:'s' %}
-                        <div class="btn-group dropleft">
+                        <div class="btn-group dropleft" style="margin-right:10px;">
                             <a href="#" style=" text-decoration:none; color:black;" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="material-icons-outlined">
                                     more_horiz
@@ -129,7 +134,7 @@ p.c {
                                 </div>
                             </a>
                         </div>
-                          {% endif %}
+                        {% endif %}
                     </div>
                     {% if post.post_image %}
                     <hr style="height:1px;border-width:0;background-color:gray; margin:2px;">
@@ -170,14 +175,13 @@ p.c {
                     <div class="my-grid d-flex flex-row justify-content-between">
                         <p class="my-grid-item like-count{{post.id}}" style="margin-left:10px; margin-bottom: 5px; margin-top: 0;"> <b> {{post.num_likes}} likes</b></p>
                     </div>
-                    <!-- post comments --> 
+                    <!-- post comments -->
                     <div class="collapse" id="collapseExample{{post.id}}">
                         <div class="comment-wrapper{{post.id}}">
                             <div class="my-grid-item d-flex flex-column ss">
                                 {% for comment in post.comments.all %}
                                 <div class="my-grid d-flex flex-column" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right: 8px;">
-
-                                    <div class="my-grid d-flex flex-row" ><a style=" text-decoration:none; color:black;" href="{% url 'account:view' user_id=comment.author.id %}"><b>{{comment.author}}:</b></a>
+                                    <div class="my-grid d-flex flex-row"><a style=" text-decoration:none; color:black;" href="{% url 'account:profile-page' user_id=comment.author.id %}"><b>{{comment.author}}:</b></a>
                                         <div style=" text-align: justify; text-justify: inter-word;  word-break: break-all;">{{comment.body}}</div>
                                     </div>
                                 </div>
@@ -197,16 +201,16 @@ p.c {
             </p>
             {% endfor %}
         </div>
-        <div class="my-grid d-flex flex-column col-3">
+        <div class="my-grid d-flex flex-column col-2">
             <div class="my-grid d-flex flex-row justify-content-center">
                 <div class="sidebar">
                     <div class="d-flex flex-row">
                         <p class="my-grid-item align-items-center m-auto ">
-                            <br>
-                            <br>
-                            <a style="text-decoration:none; color:black" href="{% url 'personal:add-post' %}">
-                                <button type="button" class="btn btn-dark">Create new post</button>
-                            </a>
+<br>
+                                <a style="text-decoration:none; color:black" href="{% url 'personal:add-post' %}">
+                                    <button type="button" class="btn btn-sm btn-light">Create new post</button>
+                                </a>
+                           
                         </p>
                     </div>
                 </div>
@@ -264,7 +268,6 @@ $(document).ready(function() {
     $(".abc").on('click', function() {
         var _postid = $(this).data('post');
         var _comment = $(`.comment-text${_postid}`).val();
-        console.log(_comment);
 
         if(_comment.length!=0){
 
@@ -285,7 +288,7 @@ $(document).ready(function() {
                 success: function(res) {
                     if (res.bool == true) {
                         $(`.comment-text${_postid}`).val('');
-                        var _html = '<div class="my-grid d-flex flex-column" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right:8px;">\                                    <div class="my-grid d-flex flex-row" ><a style=" text-decoration:none; color:black;" href="#"><b>{{request.user}}: </b></a>  <div style=" text-align: justify; text-justify: inter-word;  word-break: break-all;">' + _comment + '</div>\
+                        var _html = '<div class="my-grid d-flex flex-column" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right:8px;">\                                    <div class="my-grid d-flex flex-row" ><a style=" text-decoration:none; color:black;" href="{% url "account:profile-page" user_id=request.user.id %}"><b>{{request.user}}: </b></a>  <div style=" text-align: justify; text-justify: inter-word;  word-break: break-all;">' + _comment + '</div>\
                                         </div>\
                                     </div>';
 

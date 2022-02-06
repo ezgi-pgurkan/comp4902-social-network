@@ -8,7 +8,7 @@
 
     row-gap: 0;
     column-gap: 10px;
-}
+} 
 
 .my-gridbc {
     border: 1px;
@@ -85,20 +85,18 @@ div {
 </style>
 <div class="container">
     <div class="my-grid d-flex flex-row justify-content-center">
-        <a style="text-decoration:none; color:black" href="{% url 'account:edit-profile' user.id %}">
-            <button type="button" class="btn btn-dark">edit</button>
-        </a>
         <div class="my-grid d-flex flex-column justify-content-center col-3">
             <div class="image-container mx-auto mb-4">
                 <img class="d-block border border-dark rounded-circle img-fluid mx-auto profile-image p-container" alt="default_pfp" id="id_profile_image" src="{% static 'images/default_pfp.png' %}">
             </div>
         </div>
         <div class="my-grid d-flex flex-column justify-content-center col-5">
-            <div class="my-grid d-flex flex-row justify-content-start ">
+            <div class="my-grid d-flex flex-row justify-content-start">
                 <div class="d-flex flex-row align-items-center center1">
-                    <p><b>{{account.username}}</b></p>
+                    <h2 style="font-weight: lighter;"><b>{{account.username}}</b></h2>
                 </div>
                 {% if request.user.is_authenticated %}
+                {% if not is_self %}
                 <div class="d-flex flex-row align-items-center btn btn-light m-2 px-4" onclick="createOrReturnPrivateChat('{{id}}')">
                     <a style=" text-decoration:none; color:black; " href="{% url 'directmessage:direct-message-room' %}">
                         <div style="text-align:right;">
@@ -119,14 +117,21 @@ div {
                         </div>
                     </a>
                 </div>
+                {% else %}
+                <div class="d-flex flex-row align-items-center m-2 px-4">
+                    <a style="text-decoration:none; color:black" href="{% url 'account:edit-profile' user.id %}">
+                        <button type="button" class="btn btn-outline-dark">Edit Profile Info</button>
+                    </a>
+                </div>
+                {% endif %}
                 {% endif %}
             </div>
             <div class="my-grid d-flex flex-row">
                 <div class="my-grid d-flex flex-column col-10">
                     <div class="my-grid d-flex flex-row justify-content-between">
                         <p><b> {{posts|length}} </b>posts</p>
-                        <p><b>10 </b>Followers</p>
-                        <p><b>22 </b>Following</p>
+                        <p><b>10 </b>followers</p>
+                        <p><b>22 </b>following</p>
                         <p>&nbsp&nbsp&nbsp</p>
                     </div>
                 </div>
@@ -157,21 +162,22 @@ div {
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
             <div class="my-grid d-flex flex-row justify-content-center">
                 <div class="my-grid d-flex flex-column col-5 mt-4">
+                    {% if posts %}
                     {% for post in posts %}
                     <p class="my-grid-item m-auto">
                         <div class="my-grid my-gridbc d-flex flex-column">
                             <!-- post header -->
                             <div class="my-grid d-flex flex-row justify-content-between align-items-center">
-                                <div class="d-flex justify-content-start">
-                                    <a style=" text-decoration:none; color:black;" class="d-flex flex-row" href="{% url 'account:view' user_id=post.author.id %}">
+                                <div class="d-flex justify-content-start" style="margin-left:10px;">
+                                    <a style=" text-decoration:none; color:black;" class="d-flex flex-row" href="{% url 'account:profile-page' user_id=post.author.id %}">
                                         <div class="my-grid-item d-flex align-items-center m-auto">
-                                            <img class="img-fluid mx-auto d-block" src="{{post.author.profile_image.url}}" alt="" width="40">
+                                            <img class="img-fluid mx-auto d-block rounded-circle" src="{{post.author.profile_image.url}}" alt="" width="40">
                                         </div>
                                         <p class="my-grid-item d-flex center2"><b>&nbsp{{post.author.username}}</b></p>
                                     </a>
                                 </div>
                                 {% if is_self %}
-                                <div class="btn-group dropleft">
+                                <div class="btn-group dropleft" style="margin-right:10px;">
                                     <a href="#" style=" text-decoration:none; color:black;" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="material-icons-outlined">
                                             more_horiz
@@ -233,7 +239,7 @@ div {
                                     <div class="my-grid-item d-flex flex-column ss">
                                         {% for comment in post.comments.all %}
                                         <div class="my-grid d-flex flex-column" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right: 8px;">
-                                            <div class="my-grid d-flex flex-row"><a style=" text-decoration:none; color:black;" href="{% url 'account:view' user_id=comment.author.id %}"><b>{{comment.author}}:</b></a>
+                                            <div class="my-grid d-flex flex-row"><a style=" text-decoration:none; color:black;" href="{% url 'account:profile-page' user_id=comment.author.id %}"><b>{{comment.author}}:</b></a>
                                                 <div style=" text-align: justify; text-justify: inter-word;  word-break: break-all;">{{comment.body}}</div>
                                             </div>
                                         </div>
@@ -252,68 +258,111 @@ div {
                         </div>
                     </p>
                     {% endfor %}
+                    {% else %}
+                    {% if is_self %}
+                    <p class="my-grid-item m-auto">
+                        <div class="my-grid d-flex flex-column justify-content-center align-items-center">
+                            <h5>You haven't made any posts yet.</h5>
+                        </div>
+                    </p>
+                    {% else %}
+                    <p class="my-grid-item m-auto">
+                        <div class="my-grid d-flex flex-column justify-content-center align-items-center">
+                            <h5>This user has no posts.</h5>
+                        </div>
+                    </p>
+                    {% endif %}
+                    {% endif %}
                 </div>
             </div>
         </div>
         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
             <div class="my-grid d-flex flex-row justify-content-center">
                 <div class="my-grid d-flex flex-column col-5 mt-4">
-                    <div class="my-grid d-flex flex-row justify-content-start ">
+                    {% if info.about == None and info.tech_stack == None and info.learning == None and info.hobbies == None and info.music == None and info.tvshows == None and info.movies == None and info.books == None %}
+                    {% if is_self %}
+                      <p class="my-grid-item m-auto">
+                        <div class="my-grid d-flex flex-column justify-content-center align-items-center">
+                            <h5>You haven't written your profile yet.</h5>
+                        </div>
+                    </p>
+                    {% else %}
+                    <p class="my-grid-item m-auto">
+                        <div class="my-grid d-flex flex-column justify-content-center align-items-center">
+                            <h5>This user has no info.</h5>
+                        </div>
+                    </p>
+                    {% endif %}
+                    {% else %}
+
+                  
+                    {% if info.about != None %}
+                    <div class="my-grid d-flex flex-row justify-content-center ">
                         <h6>About:</h6>
                     </div>
-                    <div class="my-grid d-flex flex-row justify-content-start ">
+                    <div class="my-grid d-flex flex-row justify-content-center ">
                         {{info.about}}
                     </div>
                     <br>
-                    <div class="my-grid d-flex flex-row justify-content-start ">
+                    {% endif %}
+                    {% if info.tech_stack != None %}
+                    <div class="my-grid d-flex flex-row justify-content-center ">
                         <h6>Tech stack:</h6>
                     </div>
-                    <div class="my-grid d-flex flex-row justify-content-start ">
+                    <div class="my-grid d-flex flex-row justify-content-center ">
                         {{info.tech_stack}}
-                    </div>
-                    <br>
-                    <div class="my-grid d-flex flex-row justify-content-start ">
+                    </div><br>
+                    {% endif %}
+                    {% if info.learning != None %}
+                    <div class="my-grid d-flex flex-row justify-content-center ">
                         <h6>Learning:</h6>
                     </div>
-                    <div class="my-grid d-flex flex-row justify-content-start ">
+                    <div class="my-grid d-flex flex-row justify-content-center ">
                         {{info.learning}}
-                    </div>
-                    <br>
-                    <div class="my-grid d-flex flex-row justify-content-start ">
+                    </div><br>
+                    {% endif %}
+                    {% if info.hobbies != None %}
+                    <div class="my-grid d-flex flex-row justify-content-center ">
                         <h6>Hobbies & Interests:</h6>
                     </div>
-                    <div class="my-grid d-flex flex-row justify-content-start ">
+                    <div class="my-grid d-flex flex-row justify-content-center ">
                         {{info.hobbies}}
-                    </div>
-                    <br>
-                    <div class="my-grid d-flex flex-row justify-content-start ">
+                    </div><br>
+                    {% endif %}
+                    {% if info.music != None %}
+                    <div class="my-grid d-flex flex-row justify-content-center ">
                         <h6>Favorite Music:</h6>
                     </div>
-                    <div class="my-grid d-flex flex-row justify-content-start ">
+                    <div class="my-grid d-flex flex-row justify-content-center ">
                         {{info.music}}
-                    </div>
-                    <br>
-                    <div class="my-grid d-flex flex-row justify-content-start ">
+                    </div><br>
+                    {% endif %}
+                    {% if info.tvshows != None %}
+                    <div class="my-grid d-flex flex-row justify-content-center ">
                         <h6>Favorite TV Shows:</h6>
                     </div>
-                    <div class="my-grid d-flex flex-row justify-content-start ">
+                    <div class="my-grid d-flex flex-row justify-content-center ">
                         {{info.tvshows}}
-                    </div>
-                    <br>
-                    <div class="my-grid d-flex flex-row justify-content-start ">
+                    </div> <br>
+                    {% endif %}
+                    {% if info.movies != None %}
+                    <div class="my-grid d-flex flex-row justify-content-center ">
                         <h6>Favorite Movies:</h6>
                     </div>
-                    <div class="my-grid d-flex flex-row justify-content-start ">
+                    <div class="my-grid d-flex flex-row justify-content-center ">
                         {{info.movies}}
-                    </div>
-                    <br>
-                    <div class="my-grid d-flex flex-row justify-content-start ">
+                    </div> <br>
+                    {% endif %}
+                    {% if info.books != None %}
+                    <div class="my-grid d-flex flex-row justify-content-center ">
                         <h6>Favorite Books:</h6>
                     </div>
-                    <div class="my-grid d-flex flex-row justify-content-start ">
+                    <div class="my-grid d-flex flex-row justify-content-center ">
                         {{info.books}}
-                    </div>
-                    <br> <br>
+                    </div><br>
+                    {% endif %}
+                      {% endif %}
+                    <br>
                 </div>
             </div>
         </div>
@@ -371,7 +420,7 @@ $(document).ready(function() {
         var _postid = $(this).data('post');
         var _comment = $(`.comment-text${_postid}`).val();
 
-        if(_comment.length!=0){
+        if (_comment.length != 0) {
 
             $.ajax({
                 url: "{% url 'personal:save-comment' %}",
@@ -390,7 +439,7 @@ $(document).ready(function() {
                 success: function(res) {
                     if (res.bool == true) {
                         $(`.comment-text${_postid}`).val('');
-                        var _html = '<div class="my-grid d-flex flex-column" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right:8px;">\                                    <div class="my-grid d-flex flex-row" ><a style=" text-decoration:none; color:black;" href="#"><b>{{request.user}}: </b></a>  <div style=" text-align: justify; text-justify: inter-word;  word-break: break-all;">' + _comment + '</div>\
+                        var _html = '<div class="my-grid d-flex flex-column" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right:8px;">\                                    <div class="my-grid d-flex flex-row" ><a style=" text-decoration:none; color:black;" href="{% url "account:profile-page" user_id=request.user.id %}"><b>{{request.user}}: </b></a>  <div style=" text-align: justify; text-justify: inter-word;  word-break: break-all;">' + _comment + '</div>\
                                         </div>\
                                     </div>';
 
