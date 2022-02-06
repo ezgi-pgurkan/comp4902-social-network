@@ -15,6 +15,7 @@ from django.utils import timezone
 from django.core.paginator import Paginator
 
 from directmessage.constants import *
+from django.db.models import Q
 
 class ChatConsumer(AsyncJsonWebsocketConsumer):
 

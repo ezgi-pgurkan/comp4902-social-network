@@ -371,32 +371,35 @@ $(document).ready(function() {
         var _postid = $(this).data('post');
         var _comment = $(`.comment-text${_postid}`).val();
 
-        $.ajax({
-            url: "{% url 'personal:save-comment' %}",
-            type: "POST",
-            data: {
-                csrfmiddlewaretoken: "{{csrf_token}}",
-                comment: _comment,
-                post: _postid,
-            },
-            dataType: 'json',
+        if(_comment.length!=0){
 
-            beforeSend: function() {
-                $(`.save-comment${_postid}`).addClass('disabled').text('Saving...');
-            },
+            $.ajax({
+                url: "{% url 'personal:save-comment' %}",
+                type: "POST",
+                data: {
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                    comment: _comment,
+                    post: _postid,
+                },
+                dataType: 'json',
 
-            success: function(res) {
-                if (res.bool == true) {
-                    $(`.comment-text${_postid}`).val('');
-                    var _html = '<div class="my-grid d-flex flex-column" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right:8px;">\                                    <div class="my-grid d-flex flex-row" ><a style=" text-decoration:none; color:black;" href="#"><b>{{request.user}}: </b></a>  <div style=" text-align: justify; text-justify: inter-word;  word-break: break-all;">' + _comment + '</div>\
-                                    </div>\
-                                </div>';
+                beforeSend: function() {
+                    $(`.save-comment${_postid}`).addClass('disabled').text('Saving...');
+                },
 
-                    $(`.comment-wrapper${_postid}`).append(_html);
-                }
-                $(`.save-comment${_postid}`).removeClass('disabled').text('Comment');
-            },
-        });
+                success: function(res) {
+                    if (res.bool == true) {
+                        $(`.comment-text${_postid}`).val('');
+                        var _html = '<div class="my-grid d-flex flex-column" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right:8px;">\                                    <div class="my-grid d-flex flex-row" ><a style=" text-decoration:none; color:black;" href="#"><b>{{request.user}}: </b></a>  <div style=" text-align: justify; text-justify: inter-word;  word-break: break-all;">' + _comment + '</div>\
+                                        </div>\
+                                    </div>';
+
+                        $(`.comment-wrapper${_postid}`).append(_html);
+                    }
+                    $(`.save-comment${_postid}`).removeClass('disabled').text('Comment');
+                },
+            });
+        }
     });
 });
 </script>
