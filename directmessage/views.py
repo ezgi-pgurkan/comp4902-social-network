@@ -82,7 +82,7 @@ def direct_message_room_view(request, *args, **kwargs):
 	return render(request, "directmessage/room.html", context)
 
 
-	# Ajax call to return a private chatroom or create one if does not exist
+# Ajax call to return a private chatroom or create one if does not exist
 def create_or_return_private_chat(request, *args, **kwargs):
 	user1 = request.user
 	payload = {}
@@ -91,9 +91,9 @@ def create_or_return_private_chat(request, *args, **kwargs):
 			user2_id = request.POST.get("user2_id")
 			try:
 				user2 = Account.objects.get(pk=user2_id)
-				directmessage = find_or_create_direct_message(user1, user2)
+				directmessage = find_or_create_direct_message(user1, user2)#chatroom
 				payload['response'] = "Successfully got the chat."
-				payload['chatroom_id'] = directmessage.id#!!!!!!!!!!!!!!!!!!!!
+				payload['chatroom_id'] = directmessage.id
 			except Account.DoesNotExist:
 				payload['response'] = "Unable to start a chat with that user."
 	else:

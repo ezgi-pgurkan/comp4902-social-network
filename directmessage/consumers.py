@@ -185,7 +185,7 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
         await self.channel_layer.group_send(
             room.group_name,
             {
-                "type": "chat.message", #chat_message
+                "type": "chat.message", #chat_message function
                 "profile_image": self.scope["user"].profile_image.url,
                 "username": self.scope["user"].username,
                 "user_id": self.scope["user"].id,

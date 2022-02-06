@@ -258,7 +258,8 @@ function setupWebSocket(room_id) {
     closeWebSocket()
 
     // Correctly decide between ws:// and wss://
-    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws"; {% if debug_mode %}
+    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws"; 
+    {% if debug_mode %}
     var ws_path = ws_scheme + '://' + window.location.host + "/directmessage/" + roomId + "/"; // development
     {% else %}
     var ws_path = ws_scheme + '://' + window.location.host + ":8001/directmessage/" + roomId + "/"; // production
@@ -370,7 +371,7 @@ function showClientErrorModal(message){
 function appendChatMessage(data, maintainPosition, isNewMessage){
     messageType = data.msg_type
     msg_id = data.msg_id
-    message = data.message
+    message = data.message 
     uName = data.username
     user_id = data.user_id
     profile_image = data.profile_image
@@ -475,7 +476,7 @@ function createChatMessageElement(msg, msg_id, username, profile_image, user_id,
     }
 
     preloadImage(profile_image, profileImage.id)
-    }
+}
         
 
 function selectUser(user_id) {
@@ -495,6 +496,7 @@ document.getElementById('id_chat_message_input').onkeyup=function(e){
     }
 };
 
+//message sent
 document.getElementById('id_chat_message_submit').onclick=function(e){
     const messageInputDom = document.getElementById('id_chat_message_input');
     const message = messageInputDom.value;

@@ -96,6 +96,7 @@ CHANNEL_LAYERS = {
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+# Psycopg2 is a PostgreSQL database adapter for Python.
 
 
 DB_NAME = config('DB_NAME')
