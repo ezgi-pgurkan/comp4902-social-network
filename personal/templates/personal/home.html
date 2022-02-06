@@ -81,19 +81,18 @@ p.c {
                     <div class="d-flex flex-column">
                         <div class="d-flex flex-row">
                             <p class="my-grid-item align-items-center m-auto">
-                               
-                                    <div class="my-grid-item m-auto">
-                                        <img class="rounded-circle img-fluid mx-auto d-block" id="id_profile_links" src="{{user.profile_image.url}}" alt="default_pfp" width="75" height="45">
-                                    </div>
-                                    <p class="my-grid-item d-flex align-items-center center2"><b>&nbsp{{user.username}}</b></p>
-                                                            </p>
+                                <div class="my-grid-item m-auto">
+                                    <img class="rounded-circle img-fluid mx-auto d-block" id="id_profile_links" src="{{user.profile_image.url}}" alt="default_pfp" width="75" height="45">
+                                </div>
+                                <p class="my-grid-item d-flex align-items-center center2"><b>&nbsp{{user.username}}</b></p>
+                            </p>
                         </div>
                         <br>
                         <div class="d-flex flex-column">
                             <p class="my-grid-item align-items-center m-auto">
                                 <a style="text-decoration:none; color:black" href="{% url 'account:profile-page' user_id=request.user.id %}"><button type="button" class="btn btn-sm btn-light">Visit my profile</button></a>
                             </p>
-                         <br style="line-height: 1px;"> 
+                            <br style="line-height: 1px;">
                             <p class="my-grid-item align-items-center m-auto">
                                 <a style="text-decoration:none; color:black" href="{% url 'account:view' user_id=request.user.id %}"><button type="button" class="btn btn-sm btn-light">Visit account settings</button></a>
                             </p>
@@ -180,10 +179,8 @@ p.c {
                         <div class="comment-wrapper{{post.id}}">
                             <div class="my-grid-item d-flex flex-column ss">
                                 {% for comment in post.comments.all %}
-                                <div class="my-grid d-flex flex-column" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right: 8px;">
-                                    <div class="my-grid d-flex flex-row"><a style=" text-decoration:none; color:black;" href="{% url 'account:profile-page' user_id=comment.author.id %}"><b>{{comment.author}}:</b></a>
-                                        <div style=" text-align: justify; text-justify: inter-word;  word-break: break-all;">{{comment.body}}</div>
-                                    </div>
+                                <div class="my-grid d-flex flex-row" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right: 8px; text-align: justify; text-justify: inter-word;">
+                                    <p class="c"> <a style=" text-decoration:none; color:black;" href="{% url 'account:profile-page' user_id=comment.author.id %}"><b>{{comment.author}}:</b> </a>{{comment.body}}</p>
                                 </div>
                                 {% endfor %}
                             </div>
@@ -206,11 +203,10 @@ p.c {
                 <div class="sidebar">
                     <div class="d-flex flex-row">
                         <p class="my-grid-item align-items-center m-auto ">
-<br>
-                                <a style="text-decoration:none; color:black" href="{% url 'personal:add-post' %}">
-                                    <button type="button" class="btn btn-sm btn-light">Create new post</button>
-                                </a>
-                           
+                            <br>
+                            <a style="text-decoration:none; color:black" href="{% url 'personal:add-post' %}">
+                                <button type="button" class="btn btn-sm btn-light">Create new post</button>
+                            </a>
                         </p>
                     </div>
                 </div>
@@ -288,9 +284,8 @@ $(document).ready(function() {
                 success: function(res) {
                     if (res.bool == true) {
                         $(`.comment-text${_postid}`).val('');
-                        var _html = '<div class="my-grid d-flex flex-column" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right:8px;">\                                    <div class="my-grid d-flex flex-row" ><a style=" text-decoration:none; color:black;" href="{% url "account:profile-page" user_id=request.user.id %}"><b>{{request.user}}: </b></a>  <div style=" text-align: justify; text-justify: inter-word;  word-break: break-all;">' + _comment + '</div>\
-                                        </div>\
-                                    </div>';
+                        var _html = '<div class="my-grid d-flex flex-row" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right:8px;  text-align: justify; text-justify: inter-word;">\                               <p class="c">    <a style=" text-decoration:none; color:black;" href="{% url "account:profile-page" user_id=request.user.id %}"><b>{{request.user}}: </b></a> ' + _comment + '</p>\
+                            </div>';
 
                         $(`.comment-wrapper${_postid}`).append(_html);
                     }

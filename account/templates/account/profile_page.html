@@ -238,10 +238,9 @@ div {
                                 <div class="comment-wrapper{{post.id}}">
                                     <div class="my-grid-item d-flex flex-column ss">
                                         {% for comment in post.comments.all %}
-                                        <div class="my-grid d-flex flex-column" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right: 8px;">
-                                            <div class="my-grid d-flex flex-row"><a style=" text-decoration:none; color:black;" href="{% url 'account:profile-page' user_id=comment.author.id %}"><b>{{comment.author}}:</b></a>
-                                                <div style=" text-align: justify; text-justify: inter-word;  word-break: break-all;">{{comment.body}}</div>
-                                            </div>
+                                        <div class="my-grid d-flex flex-row" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right: 8px; text-align: justify; text-justify: inter-word;">
+                                            <p class="c"> <a style=" text-decoration:none; color:black;" href="{% url 'account:profile-page' user_id=comment.author.id %}"><b>{{comment.author}}:</b></a>
+                                                {{comment.body}}</p>
                                         </div>
                                         {% endfor %}
                                     </div>
@@ -281,7 +280,7 @@ div {
                 <div class="my-grid d-flex flex-column col-5 mt-4">
                     {% if info.about == None and info.tech_stack == None and info.learning == None and info.hobbies == None and info.music == None and info.tvshows == None and info.movies == None and info.books == None %}
                     {% if is_self %}
-                      <p class="my-grid-item m-auto">
+                    <p class="my-grid-item m-auto">
                         <div class="my-grid d-flex flex-column justify-content-center align-items-center">
                             <h5>You haven't written your profile yet.</h5>
                         </div>
@@ -294,8 +293,6 @@ div {
                     </p>
                     {% endif %}
                     {% else %}
-
-                  
                     {% if info.about != None %}
                     <div class="my-grid d-flex flex-row justify-content-center ">
                         <h6>About:</h6>
@@ -361,7 +358,7 @@ div {
                         {{info.books}}
                     </div><br>
                     {% endif %}
-                      {% endif %}
+                    {% endif %}
                     <br>
                 </div>
             </div>
@@ -439,9 +436,8 @@ $(document).ready(function() {
                 success: function(res) {
                     if (res.bool == true) {
                         $(`.comment-text${_postid}`).val('');
-                        var _html = '<div class="my-grid d-flex flex-column" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right:8px;">\                                    <div class="my-grid d-flex flex-row" ><a style=" text-decoration:none; color:black;" href="{% url "account:profile-page" user_id=request.user.id %}"><b>{{request.user}}: </b></a>  <div style=" text-align: justify; text-justify: inter-word;  word-break: break-all;">' + _comment + '</div>\
-                                        </div>\
-                                    </div>';
+                        var _html = '<div class="my-grid d-flex flex-row" style=" margin-left:10px; margin-bottom: 5px; margin-top: 0; margin-right:8px;  text-align: justify; text-justify: inter-word;">\                               <p class="c">    <a style=" text-decoration:none; color:black;" href="{% url "account:profile-page" user_id=request.user.id %}"><b>{{request.user}}: </b></a> ' + _comment + '</p>\
+                            </div>';
 
                         $(`.comment-wrapper${_postid}`).append(_html);
                     }
