@@ -48,7 +48,7 @@ MarkupSafe==1.1.1
 mccabe==0.6.1
 myst-parser==0.12.10
 nbformat==5.0.8
-nltk==3.5
+nltk==3.6.6
 numpy==1.20.0rc2
 oauthlib==3.1.0
 omegaconf==2.1.0.dev14
