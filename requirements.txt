@@ -124,7 +124,7 @@ typing-extensions==3.7.4.3
 tzdata==2022.1
 Unidecode==1.1.2
 untokenize==0.1.1
-urllib3==1.25.11
+urllib3==1.26.5
 virtualenv==20.0.33
 virtualenv-clone==0.5.4
 websocket-client==0.57.0
