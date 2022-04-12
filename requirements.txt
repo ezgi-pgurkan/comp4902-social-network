@@ -71,7 +71,7 @@ py-rouge==1.1
 pycodestyle==2.6.0
 pycparser==2.20
 pyflakes==2.2.0
-Pygments==2.7.3
+Pygments==2.7.4
 PyJWT==2.0.0
 pylint==2.6.0
 pyparsing==2.4.7
